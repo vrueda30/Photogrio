@@ -1,0 +1,5 @@
+{
+  "domain": "photogrio.auth0.com",
+  "clientId": "c5YZyJhvga3C8TauRo2eZQvUdh6Q6ZeR",
+  "audience": "{yourApiIdentifier}"
+}
