@@ -1,0 +1,1 @@
+export const CREATE_USER_URL = "http://localhost:5001/api/accounts/create_account"

@@ -1,17 +1,13 @@
-package account
+package models
 
 import (
-	"database/sql"
+	db "server/database"
 )
-
-type NullTime struct {
-	sql.NullTime
-}
 
 type Membership struct {
 	Id             string       `json:"id"`
 	SubscriptionId Subscription `json:"subscriptionId"`
-	ActivationDate NullTime     `json:"activationDate"`
-	ExpirationDate NullTime     `json:"expirationDate"`
+	ActivationDate db.NullTime  `json:"activationDate"`
+	ExpirationDate db.NullTime  `json:"expirationDate"`
 	AutoRenew      bool         `json:"autoRenew"`
 }
