@@ -1,6 +1,7 @@
 package services
 
 import (
+	"contacts.api/middleware"
 	"contacts.api/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -24,7 +25,7 @@ func init() {
 }
 
 func SetupRoutes(router *gin.Engine, apiBasePath string) {
-	router.POST(fmt.Sprintf("%s/%s/%s", apiBasePath, contactPath, "create_contact"), createContact)
+	router.POST(fmt.Sprintf("%s/%s/%s", apiBasePath, contactPath, "create_contact"), middleware.CheckJWT(), createContact)
 }
 
 func createContact(context *gin.Context) {

@@ -3,7 +3,7 @@ import {Form, Formik, useField} from "formik";
 import * as Yup from "yup"
 import axios from "axios";
 import {useState} from "react";
-import {CREATE_USER_URL} from "./api-routes.tsx";
+import {CREATE_ACCOUNT_URL} from "./api-routes.tsx";
 import {useNavigate} from "react-router-dom";
 
 const MyTextInput = ({label, ...props}) => {
@@ -57,7 +57,7 @@ export const Register = () => {
                       .required("Required")
               })
             } onSubmit={async(values, {setSubmitting}) => {
-                const response = await axios.post(CREATE_USER_URL, JSON.stringify(values, null, 2))
+                const response = await axios.post(CREATE_ACCOUNT_URL, JSON.stringify(values, null, 2), )
                     .then((r) => {
                         console.log(r.data)
                         navigate("/")

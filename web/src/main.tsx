@@ -14,6 +14,8 @@ import AuthProviderWithCallback from "./auth/AuthProviderWithCallback.tsx";
 import ProtectedRoute from "./auth/ProtectedRoute.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Register from "./pages/Register.tsx"
+import {Contacts} from "./pages/Contacts.tsx";
+
 
 initFontAwesome();
 
@@ -41,8 +43,11 @@ const router = createBrowserRouter([
             {
                 path: "/test",
                 element: <App />
+            },
+            {
+                path: "/contacts",
+                element: <Contacts />
             }
-
         ]
     },
     {

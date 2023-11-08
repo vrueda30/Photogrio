@@ -32,6 +32,20 @@ export const NavBar = () => {
                               </Row>
                           </Container>
                       </NavItem>
+                      <NavItem>
+                          <Container>
+                              <Row>
+                                  <FontAwesomeIcon icon="address-book" className="mr-3 menu-icon" />
+                              </Row>
+                              <Row>
+                                  <NavLink
+                                      tag={RouterNavLink}
+                                      to="/contacts"
+                                      exact
+                                      activeClassName="router-link-exact-active">Clients</NavLink>
+                              </Row>
+                          </Container>
+                      </NavItem>
                   </Nav>
               </Collapse>
               </Container>

@@ -9,7 +9,12 @@ WORKDIR /app
 RUN go build -gcflags "all=-N -l" -o /server
 
 FROM ubuntu:latest
-EXPOSE 5001 40001
+RUN mkdir -p /usr/share/ca-certificates
+COPY photogrio.crt /usr/share/ca-certificates
+RUN apt-get update
+RUN apt-get install -y ca-certificates
+RUN update-ca-certificates
+EXPOSE 5002 40001
 WORKDIR /
 RUN mkdir -p /logs/
 COPY --from=build-env /go/bin/dlv /
