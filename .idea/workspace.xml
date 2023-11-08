@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e0018702-616f-4d05-9b65-f373eaf373fa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/contacts.api/.idea/contacts.api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/contacts.api/middleware/auth-validator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/contacts.api/middleware/custom_claims.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/contacts.api/photogrio.crt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/job.api/.idea/job.api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/colors.sass" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/components/Contact/ContactList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/config/api_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/config/https.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/pages/Contacts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/contacts.api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/server/contacts.api/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/contacts.api/services/contact.service.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/contacts.api/services/contact.service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/auth/auth_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/auth/auth_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/pages/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/pages/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/pages/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/pages/Register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/pages/api-routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/pages/api-routes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/photogrio.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/photogrio.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/photogrio.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/photogrio.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/photogrio.sass" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/photogrio.sass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/utils/initFontAwesome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/utils/initFontAwesome.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2XtxKzTfMsu3TgUevO4fswlu7MK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/victorrueda/Projects/Photogrio",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0018702-616f-4d05-9b65-f373eaf373fa" name="Changes" comment="" />
+      <created>1699462118874</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1699462118874</updated>
+      <workItem from="1699462119949" duration="12000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
