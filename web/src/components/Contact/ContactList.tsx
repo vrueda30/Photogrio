@@ -1,13 +1,6 @@
+import Griddle,{RowDefinition, ColumnDefinition} from "griddle-react";
+
 export const ContactList = () => {
-    var data = [
-        {
-            "id": 0,
-            "name":"",
-            "email":"",
-            "phone":"",
-            "contactType":""
-        }
-    ]
     return(
         <>
             One twowkekwjewkljrkewjrkwerj
