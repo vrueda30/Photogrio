@@ -1,37 +1,40 @@
 package middleware
 
 import (
-	"context"
 	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
+	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 )
 
 var (
 	signingKey = []byte(os.Getenv("AUTH0_CLIENT_SECRET"))
-	issuer     = "https://" + os.Getenv("AUTH0_DOMAIN") + "/"
-	audience   = []string{os.Getenv("AUTH0_AUDIENCE")}
-
-	keyFunc = func(ctx context.Context) (interface{}, error) {
-		return signingKey, nil
-	}
-
-	customClaims = func() validator.CustomClaims {
-		return &PCustomClaims{}
-	}
+	issuer     = os.Getenv("AUTH0_APP_DOMAIN")
+	audience   = []string{os.Getenv("AUTH0_APP_AUDIENCE")}
 )
 
-func checkJWT() gin.HandlerFunc {
+func CheckJWT() gin.HandlerFunc {
+	issueUrl, err := url.Parse(issuer)
+	if err != nil {
+		log.Printf("Failed to parse the issuer url: %v", err)
+	}
+	provider := jwks.NewCachingProvider(issueUrl, 5*time.Minute)
+
 	jwtValidator, err := validator.New(
-		keyFunc,
+		provider.KeyFunc,
 		validator.RS256,
-		issuer,
+		issueUrl.String(),
 		audience,
-		validator.WithCustomClaims(customClaims),
+		validator.WithCustomClaims(
+			func() validator.CustomClaims {
+				return &PCustomClaims{}
+			},
+		),
 		validator.WithAllowedClockSkew(30*time.Second),
 	)
 	if err != nil {

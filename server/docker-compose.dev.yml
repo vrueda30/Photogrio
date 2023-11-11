@@ -1,7 +1,7 @@
 services:
   photogrio-server:
     container_name: photogrio-server
-    build: ./
+    build: ./account.api
     ports:
       - 5001:5001
       - 40000:40000
@@ -14,6 +14,8 @@ services:
       - MYSQL_USER=photogrioapi
       - MYSQL_PASSWORD = irishvrlr30
       - MYSQL_DATABASE = photogriodb
+      - AUTH0_APP_DOMAIN=https://photogrio.auth0.com/
+      - AUTH0_APP_AUDIENCE=https://photogrio.com
       - AUTH0_DOMAIN=login.photogrio.com
       - AUTH0_AUDIENCE=https://photogrio.auth0.com/api/v2/
       - AUTH0_API_AUDIENCE=https://photogrio.auth0.com/api/v2/
@@ -21,6 +23,7 @@ services:
       - AUTH0_CLIENT_ID=ddlJicrbYRznyfMJVLMqnRkRfloQOPFh
       - AUTH0_CLIENT_SECRET=Z5Y7Y5s-mx95mY7n7ZUca9Omyx_kSdi73-YnhaMJWwI_I27xmqkAZwJbzDPC_YIe
       - AUTH0_CONNECTION=Photogrio
+      - SESSION_KEY=WwifweIkwi@#9sk!Ikewoqeo#4kfiwle
     command: /dlv --headless --listen=:40000 --api-version=2 exec /photogrio/server
     depends_on:
       - db
@@ -41,6 +44,7 @@ services:
       - AUTH0_AUTHORIZATION_URI=https://photogrio.auth0.com/oauth/token
       - AUTH0_CLIENT_ID=c5YZyJhvga3C8TauRo2eZQvUdh6Q6ZeR
       - AUTH0_CLIENT_SECRET=T4fE7yzbilvUdgmI9ZyS3WA436r0kaULVrClFTBS_dCk17YgS0TDayAq_3EuMhfi
+      - SESSION_KEY=WwifweIkwi@#9sk!Ikewoqeo#4kfiwle
     command: /dlv --headless --listen=:40001 --api-version=2 exec /contact-api/server
     depends_on:
       - db

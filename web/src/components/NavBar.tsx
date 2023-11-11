@@ -25,7 +25,7 @@ export const NavBar = () => {
                               <Row>
                           <NavLink
                               tag={RouterNavLink}
-                              to="/"
+                              to="/dashboard"
                               exact
                               activeClassName="router-link-exact-active"
                               >Home</NavLink>
