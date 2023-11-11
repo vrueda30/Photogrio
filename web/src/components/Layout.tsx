@@ -26,7 +26,7 @@ export const Layout = () => {
                         },
                         withCredentials: true,
                     })
-                        .then((r) => {
+                        .then(() => {
                             console.log("Contact cookies retrieved")
                         })
                 }

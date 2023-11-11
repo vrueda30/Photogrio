@@ -1,4 +1,4 @@
-import {Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "reactstrap";
+import {Button, Col, Container, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import ContactList from "../components/Contact/ContactList.tsx";
 import {CREATE_CONTACT_URL} from "./api-routes.tsx"
 import axios from "axios";
@@ -13,18 +13,6 @@ interface userFormProps {
     callback: () => void,
 }
 
-interface ContactType{
-    id: number,
-    name: string,
-}
-
-interface Values{
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    contactType: ContactType,
-}
 const CreateUserForm = ({isOpen, callback}:userFormProps) => {
     const {getAccessTokenSilently} = useAuth0()
     const [bearerToken, setBearerToken] = useState("")
