@@ -3,7 +3,7 @@ LABEL authors="victorrueda"
 
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
-ADD . /app
+ADD .. /app
 WORKDIR /app
 
 RUN go build -gcflags "all=-N -l" -o /server

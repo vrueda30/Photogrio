@@ -55,6 +55,7 @@ func main() {
 		)
 	}))
 	services.SetupRoutes(router, basePath)
+	services.SetupUserRoutes(router, basePath)
 	dsn := database.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

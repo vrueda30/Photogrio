@@ -25,11 +25,13 @@ func init() {
 }
 
 func SetupRoutes(router *gin.Engine, apiBasePath string) {
-	router.POST(fmt.Sprintf("%s/%s/%s", apiBasePath, contactPath, "create_contact"), middleware.CheckJWT(), createContact)
+	router.POST(fmt.Sprintf("%s/%s/%s/:accountId", apiBasePath, contactPath, "create_contact"), middleware.CheckJWT(), createContact)
 }
 
 func createContact(context *gin.Context) {
 	var newContact *models.ContactDTO
+	c := context.Param("accountId")
+	log.Print(c)
 	if err := context.ShouldBindJSON(newContact); err != nil {
 		log.Print(err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -11,8 +11,14 @@ type User struct {
 	LastName  string   `json:"lastName"`
 	Email     string   `json:"email"`
 	Phone     string   `json:"phone"`
-	AccountId string   `json:"accountId"`
+	AccountId int      `json:"accountId"`
 	Account   *Account `json:"models"`
 	Deleted   bool     `json:"deleted"`
 	AuthId    string   `json:"authId"`
+}
+
+type UserSessionInfo struct {
+	Name      string `json:"name"`
+	AccountId int    `json:"accountId"`
+	UserId    int    `json:"userId"`
 }

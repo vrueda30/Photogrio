@@ -12,8 +12,8 @@ import (
 const accountPath = "accounts"
 
 func SetupRoutes(router *gin.Engine, apiBasePath string) {
-	accounts := router.Group(fmt.Sprintf("%s/%s", apiBasePath, accountPath))
-	accounts.POST(fmt.Sprintf("/%s", "create_account"), createAccount)
+	accounts := router.Group(fmt.Sprintf("%s/%s/", apiBasePath, accountPath))
+	accounts.POST(fmt.Sprintf("%s", "create_account"), createAccount)
 }
 
 func createAccount(context *gin.Context) {
@@ -43,7 +43,7 @@ func createAccount(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	user := models.User{Account: &newAccount, Name: account.Name, AuthId: *id}
+	user := models.User{Account: &newAccount, Name: account.Name, AuthId: *id, Email: account.Email}
 	res, err = CreateNewUser(user)
 	if res < 0 || err != nil {
 		log.Print(err)
