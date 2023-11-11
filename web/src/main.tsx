@@ -28,7 +28,8 @@ const providerConfig = {
     clientId: config.clientId,
     authorizationParams: {
         redirect_uri: window.location.origin,
-        ...(config.audience ? { audience: config.audience } : null )
+        ...(config.audience ? { audience: config.audience } : null ),
+        cacheMode: "on"
     },
 }
 const router = createBrowserRouter([

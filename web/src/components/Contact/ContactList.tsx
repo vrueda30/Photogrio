@@ -1,17 +1,15 @@
+import Table from"../Table/Table.tsx"
 export const ContactList = () => {
-    var data = [
-        {
-            "id": 0,
-            "name":"",
-            "email":"",
-            "phone":"",
-            "contactType":""
-        }
+    const dataColumns = [
+        {label: "Name", accessor: "name"},
+        {label: "Email", accessor: "email"},
+        {label: "Contact Type", accessor: "contactType"},
+        {label: "Phone", accessor: "phone"}
     ]
+
     return(
         <>
-            One twowkekwjewkljrkewjrkwerj
-
+            <Table dkey="id" columns={dataColumns} cssColClass={"flex-fill"} noDataMsg="No contacts to show"/>
         </>
     )
 }

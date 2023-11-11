@@ -12,7 +12,7 @@ export const NavBar = () => {
     return(
       <div className="nav-container p-nav-bar">
           <Navbar color="light" light expand="md" container={false}>
-              <Container>
+              <Container className="p-nav">
               <NavbarBrand>Photogrio</NavbarBrand>
               <NavbarToggler onClick={toggle} />
               <Collapse isOpen={isOpen} navbar>
