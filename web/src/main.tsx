@@ -15,6 +15,7 @@ import ProtectedRoute from "./auth/ProtectedRoute.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Register from "./pages/Register.tsx"
 import {Contacts} from "./pages/Contacts.tsx";
+import {EditContact} from "./pages/EditContact.tsx";
 
 
 initFontAwesome();
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             {
                 path: "/contacts",
                 element: <Contacts />
+            },
+            {
+                path: "/contact/:contactId",
+                element: <EditContact />
             }
         ]
     },

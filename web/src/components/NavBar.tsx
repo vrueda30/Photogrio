@@ -25,9 +25,9 @@ export const NavBar = () => {
                               <Row>
                           <NavLink
                               tag={RouterNavLink}
-                              to="/dashboard"
+                              to="/"
+                              className="router-link-exact-active"
                               exact
-                              activeClassName="router-link-exact-active"
                               >Home</NavLink>
                               </Row>
                           </Container>

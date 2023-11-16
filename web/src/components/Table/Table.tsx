@@ -1,16 +1,19 @@
-import {FC} from "react";
 import TableHeader from "./TableHeader.tsx";
 import TableBody from "./TableBody.tsx";
 
+interface Column{
+    label: string,
+    accessor: string
+}
 interface DataProps {
     dkey: string,
-    columns:{label: string, accessor: string}[],
-    data?:any[]|null,
+    columns:Column[],
+    data?:never[]|null | undefined,
     cssColClass?: string,
     noDataMsg?:string
 }
 
-const RenderNoData = (msg:string) => {
+const RenderNoData = (msg?:string) => {
     return(
         <>
             <tbody></tbody>
@@ -20,19 +23,15 @@ const RenderNoData = (msg:string) => {
         </>
     )
 }
-const Table:FC<DataProps> = ({dkey,
-                                 columns,
-                                 data,
-                                 cssColClass,
-                                 noDataMsg="No data to show"}) => {
+const Table = ({...props}:(DataProps)) => {
 
     return(
         <>
             <table className="p-table">
-                <TableHeader columns={columns} cssColClass={cssColClass === undefined ? undefined : cssColClass } />
-                <TableBody />
+                <TableHeader columns={props.columns} cssColClass={props.cssColClass === undefined ? undefined : props.cssColClass } />
+                <TableBody columns={props.columns} data={props.data} />
             </table>
-            {!data && RenderNoData(noDataMsg)}
+            {!props.data && RenderNoData(props.noDataMsg)}
         </>
     )
 }
