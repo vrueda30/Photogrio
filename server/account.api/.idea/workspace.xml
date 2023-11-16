@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c2dfa5d7-9cbb-431e-8e80-d12115a6e446" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth0client/auth0client.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/app-errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/database.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/database.types.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/auth-validator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/custom_claims.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/photogrio.crt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/account.service.data.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/account.service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/common.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/models/account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/models/membership.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/models/subscription.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/models/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/users.service.data.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/users.service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/.idea/contacts.api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/common/app-errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/data/database.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/middleware/auth-validator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/middleware/custom_claims.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/models/lists.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/photogrio.crt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contacts.api/seed.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job.api/.idea/job.api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job.api/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job.api/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job.api/app.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file://$USER_HOME$/go/go1.21.3" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2YFcaLYL0Qjg7ZD4u3RBxfYDHPl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/victorrueda/Documents/GitHub/Photogrio/server/account.api"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c2dfa5d7-9cbb-431e-8e80-d12115a6e446" name="Changes" comment="" />
+      <created>1700124830476</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700124830476</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

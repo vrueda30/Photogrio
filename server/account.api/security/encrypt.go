@@ -4,7 +4,9 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/hex"
 	"io"
+	"log"
 	"server/common"
 )
 
@@ -23,7 +25,8 @@ func Decrypt(data []byte, passphrase string) []byte {
 }
 
 func Encrypt(data []byte, passphrase string) []byte {
-	key := []byte(passphrase)
+	log.Printf("Key: %s", passphrase)
+	key, _ := hex.DecodeString(passphrase)
 	block, err := aes.NewCipher(key)
 	common.HandlePanicError(err)
 	gcm, err := cipher.NewGCM(block)
@@ -34,6 +37,7 @@ func Encrypt(data []byte, passphrase string) []byte {
 		common.HandlePanicError(err)
 	}
 
-	cipherText := gcm.Seal(nonce, nonce, data, nil)
+	cipherText := gcm.Seal(nil, nonce, data, nil)
+	log.Printf("cipher text: %x\n", cipherText)
 	return cipherText
 }

@@ -3,6 +3,7 @@ package middleware
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"log"
 	"os"
 	"server/common"
 	"server/security"
@@ -17,6 +18,9 @@ func ReadCookie() gin.HandlerFunc {
 		common.HandlePanicError(err)
 		plainText := security.Decrypt([]byte(cookie), os.Getenv("SESSION_KEY"))
 		err = json.Unmarshal(plainText, &Account)
+		if err != nil {
+			log.Print(err)
+		}
 		common.HandlePanicError(err)
 		context.Next()
 	}

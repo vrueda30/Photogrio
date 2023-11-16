@@ -1,11 +1,15 @@
 package main
 
 import (
+	"contacts.api/data"
+	"contacts.api/models"
 	"contacts.api/services"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"io"
 	"log"
 	"os"
@@ -44,6 +48,13 @@ func main() {
 		)
 	}))
 	services.SetupRoutes(router, basePath)
+	dsn := data.Dsn()
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = db.AutoMigrate(&models.Contact{}, &models.Address{})
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "5002"

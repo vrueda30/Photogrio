@@ -1,16 +1,19 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Contact struct {
 	gorm.Model
-	FirstName   string      `json:"firstName"`
-	LastName    string      `json:"lastName"`
-	Email       string      `json:"email"`
-	Phone       string      `json:"phone"`
-	AccountId   string      `json:"accountId"`
-	ContactType ContactType `json:"contactType"`
-	Address     Address     `json:"address"`
+	FirstName   string  `json:"firstName"`
+	LastName    string  `json:"lastName"`
+	Email       string  `json:"email"`
+	Phone       string  `json:"phone"`
+	AccountId   int     `json:"accountId"`
+	ContactType int     `json:"contactType"`
+	AddressId   int     `json:"addressId"`
+	Address     Address `json:"address"`
 }
 
 type Address struct {
@@ -34,5 +37,13 @@ type ContactDTO struct {
 	City        string `json:"city"`
 	State       string `json:"state"`
 	Zip         string `json:"zip"`
-	AccountId   string `json:"accountId"`
+	AccountId   int    `json:"accountId"`
+}
+
+type ContactViewDTO struct {
+	ID          int    `json:"ID"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Phone       string `json:"phone"`
+	ContactType int    `json:"contactType"`
 }
