@@ -1,15 +1,15 @@
 package services
 
 import (
+	"account.api/middleware"
+	"account.api/security"
+	"account.api/services/models"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
-	"server/middleware"
-	"server/security"
-	"server/services/models"
 )
 
 const userPath = "users"
@@ -22,7 +22,7 @@ func SetupUserRoutes(router *gin.Engine, apiBasePath string) {
 func CreateNewUser(newUser models.User) (int, error) {
 	res, err := CreateUser(newUser)
 	if err != nil {
-		log.Print(err)
+		log.Print(err.Error())
 		return -1, err
 	}
 

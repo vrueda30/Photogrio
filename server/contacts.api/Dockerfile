@@ -14,10 +14,9 @@ COPY photogrio.crt /usr/share/ca-certificates
 RUN apt-get update
 RUN apt-get install -y ca-certificates
 RUN update-ca-certificates
+RUN apt update
+RUN apt install nano
 EXPOSE 5002 40001
-WORKDIR /
-RUN mkdir -p /logs/
+WORKDIR /contact-api
 COPY --from=build-env /go/bin/dlv /
 COPY --from=build-env /server /contact-api/
-
-CMD ["/dlv", "--listen=:40001", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/contact-api/server"]

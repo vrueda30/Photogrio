@@ -76,28 +76,28 @@ const CreateUserForm = ({isOpen, callback}:userFormProps) => {
                             name="firstName"
                             type="text"
                             placeHolder="First Name"
-                            className="w-100"
+                            className="form-control w-100"
                             />
                         <PTextInput
                             label="Last Name"
                             name="lastName"
                             type="text"
                             placeHolder="Last Name"
-                            className="w-100"
+                            className="form-control w-100"
                             />
                         <PTextInput
                             label="Email"
                             name="email"
                             type="text"
                             placeHolder="@"
-                            className="w-100"
+                            className="form-control w-100"
                             />
                         <PTextInput
                             label="Phone Number"
                             name="phone"
                             type="text"
                             placeHolder="111-111-1111"
-                            className="w-100"
+                            className="form-control w-100"
                             />
                             <div>
                                 <Container className="new-contact-footer">

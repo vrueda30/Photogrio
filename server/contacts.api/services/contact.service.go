@@ -7,14 +7,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
 const contactPath = "contacts"
+const imageFolder = "images"
 
 var (
 	loc *time.Location
@@ -28,10 +31,101 @@ func init() {
 	}
 }
 
+// router.Group(fmt.Sprintf("%s/%s/", apiBasePath, accountPath))
 func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	router.POST(fmt.Sprintf("%s/%s/%s/:accountId", apiBasePath, contactPath, "create_contact"), middleware.CheckJWT(), middleware.ReadCookie(), createContact)
 	router.GET(fmt.Sprintf("%s/%s/%s/:accountId", apiBasePath, contactPath, "get_cookies"), middleware.CheckJWT(), getContactServiceCookie)
 	router.GET(fmt.Sprintf("%s/%s/:accountId", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), getContacts)
+	router.GET(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "get_contact"), middleware.CheckJWT(), middleware.ReadCookie(), getContact)
+	router.POST(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "save_profile_avatar"), middleware.CheckJWT(), middleware.ReadCookie(), uploadProfilePicForContact)
+}
+
+func getContact(ctx *gin.Context) {
+	contactId, err := strconv.Atoi(ctx.Param("contactId"))
+	if err != nil {
+		log.Print(err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	contact, cerr := GetContact(contactId, middleware.Cookie.AccountId)
+	if cerr != nil {
+		log.Print(cerr)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": cerr.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, contact)
+
+	return
+}
+
+func uploadProfilePicForContact(ctx *gin.Context) {
+	contactId, _ := strconv.Atoi(ctx.Param("contactId"))
+	_file, err := ctx.FormFile("image")
+	if err != nil {
+		handleError(err, ctx)
+		return
+	}
+	_, err = deleteProfilePicByContactId(contactId)
+	if err != nil {
+		handleError(err, ctx)
+		return
+	}
+	path := getPathForContact(contactId, _file.Filename)
+	err = ctx.SaveUploadedFile(_file, path)
+	if err != nil {
+		handleError(err, ctx)
+		return
+	}
+
+	url := getUrlForImage(path)
+	err = UpdateProfileUrlForContact(url, contactId)
+	if err != nil {
+		handleError(err, ctx)
+		return
+	}
+	log.Print(url)
+	ctx.JSON(http.StatusOK, gin.H{"url": url})
+
+	return
+}
+
+func deleteProfilePicByContactId(contactId int) (bool, error) {
+	url, err := GetProfileUrlForContact(contactId)
+	if err != nil {
+		return false, err
+	}
+	if url == "" {
+		return true, nil
+	}
+	segmentedUrl := strings.Split(url, "/")
+	imageName := segmentedUrl[len(segmentedUrl)-1]
+	path := fmt.Sprintf("./images/%s", imageName)
+	err = os.Remove(path)
+	if err != nil {
+		log.Print(err)
+		return false, err
+	}
+	return true, nil
+}
+
+func getUrlForImage(path string) string {
+	pathLength := len(path)
+	imgPath := path[1:pathLength]
+	url := fmt.Sprintf("%s%s", os.Getenv("URL_BASE"), imgPath)
+
+	return url
+}
+
+func handleError(err error, ctx *gin.Context) {
+	log.Print(err.Error())
+	ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+}
+
+func getPathForContact(contactId int, fileName string) string {
+	fullFileName := fmt.Sprintf("%s-%s", uuid.New().String(), fileName)
+	path := fmt.Sprintf("%s/%s", "./images", fullFileName)
+	return path
 }
 
 func getContacts(ctx *gin.Context) {
@@ -110,6 +204,6 @@ func getContactServiceCookie(ctx *gin.Context) {
 	cipherText := security.Encrypt(acctAsBytes, os.Getenv("SESSION_KEY"))
 	log.Print(cipherText)
 	ctx.SetCookie("contactapi", string(cipherText), 60*60*24, "/", "localhost", false, true)
-	ctx.JSON(http.StatusOK, "{status:ok}")
+	ctx.JSON(http.StatusOK, "{status:Ok}")
 	return
 }

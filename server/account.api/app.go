@@ -1,6 +1,9 @@
 package main
 
 import (
+	"account.api/database"
+	"account.api/services"
+	"account.api/services/models"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -10,9 +13,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"server/database"
-	"server/services"
-	"server/services/models"
 	"time"
 )
 
@@ -24,7 +24,7 @@ func main() {
 	f, e := os.Create("/logs/photogrio.log")
 	if e != nil {
 		log.Print(e)
-		//log.Fatal(e)
+		log.Fatal(e)
 	}
 	log.Print(f.Name())
 

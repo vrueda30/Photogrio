@@ -1,9 +1,9 @@
 package services
 
 import (
+	"account.api/services/models"
 	"errors"
 	"log"
-	"server/services/models"
 )
 
 func init() {

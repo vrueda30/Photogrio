@@ -1,10 +1,10 @@
 package services
 
 import (
+	"account.api/database"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
-	"server/database"
 )
 
 var db *gorm.DB

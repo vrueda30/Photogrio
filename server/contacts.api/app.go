@@ -19,10 +19,28 @@ import (
 const basePath = "/api"
 
 func main() {
+	var f *os.File
 	log.Print("Starting contact api")
-	f, _ := os.Create("accountapi.log")
+	mydir, err := os.Getwd()
+	if err != nil {
+		fmt.Print(err)
+	}
+	log.Print(mydir)
+	logPath := fmt.Sprintf("%s/%s/%s", mydir, "logs", "contact-api.log")
+	_, err = os.Stat(logPath)
+	if err != nil {
+		log.Printf("No file: %s", err.Error())
+		f, _ = os.Create(logPath)
+	} else {
+		log.Print("Found contact api log")
+		f, _ = os.OpenFile(logPath, os.O_APPEND|os.O_RDWR, 0750)
+	}
+	err = os.MkdirAll("images/profiles/", 0750)
+	if err != nil {
+		log.Print(err)
+	}
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-	err := godotenv.Load()
+	err = godotenv.Load()
 	if err != nil {
 		log.Print(err)
 	}
@@ -48,6 +66,7 @@ func main() {
 		)
 	}))
 	services.SetupRoutes(router, basePath)
+	router.Static("/images", "./images")
 	dsn := data.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

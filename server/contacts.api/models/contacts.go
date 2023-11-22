@@ -1,19 +1,30 @@
 package models
 
 import (
+	"database/sql"
 	"gorm.io/gorm"
+	"mime/multipart"
 )
 
 type Contact struct {
 	gorm.Model
-	FirstName   string  `json:"firstName"`
-	LastName    string  `json:"lastName"`
-	Email       string  `json:"email"`
-	Phone       string  `json:"phone"`
-	AccountId   int     `json:"accountId"`
-	ContactType int     `json:"contactType"`
-	AddressId   int     `json:"addressId"`
-	Address     Address `json:"address"`
+	FirstName   string         `json:"firstName"`
+	LastName    string         `json:"lastName"`
+	Email       string         `json:"email"`
+	Phone       string         `json:"phone"`
+	AccountId   int            `json:"accountId"`
+	ContactType int            `json:"contactType"`
+	AddressId   int            `json:"addressId"`
+	Address     Address        `json:"address"`
+	ProfilePic  string         `json:"profilePic"`
+	BirthDay    sql.NullTime   `json:"birthDay"`
+	Notes       sql.NullString `json:"notes"`
+}
+
+type UserProfileDTO struct {
+	ContactId  int                   `json:"contactId"`
+	FileName   string                `json:"profilePath"`
+	ProfilePic *multipart.FileHeader `json:"profilePic"`
 }
 
 type Address struct {

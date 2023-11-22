@@ -1,13 +1,13 @@
 package security
 
 import (
+	"account.api/common"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/hex"
 	"io"
 	"log"
-	"server/common"
 )
 
 func Decrypt(data []byte, passphrase string) []byte {

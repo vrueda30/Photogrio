@@ -1,7 +1,7 @@
 package models
 
 import (
-	db "server/database"
+	db "account.api/database"
 )
 
 type Membership struct {

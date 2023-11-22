@@ -170,4 +170,11 @@ textarea:focus {
   margin-top: 1rem;
 }
 
+.contact-edit-form {
+  border-style: solid;
+  border-color: #cbd5e0;
+  margin-top: 3rem;
+  border-width: 0.08rem;
+}
+
 /*# sourceMappingURL=photogrio.css.map */

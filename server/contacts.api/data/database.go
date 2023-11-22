@@ -57,6 +57,6 @@ func Dsn() string {
 	} else {
 		db = os.Getenv("MYSQL_DATABASE")
 	}
-	log.Printf("%s:%s@tcp(%s)/%s", user, pass, host, db)
+
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, pass, host, db)
 }

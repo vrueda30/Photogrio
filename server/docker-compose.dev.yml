@@ -45,7 +45,12 @@ services:
       - AUTH0_CLIENT_ID=c5YZyJhvga3C8TauRo2eZQvUdh6Q6ZeR
       - AUTH0_CLIENT_SECRET=T4fE7yzbilvUdgmI9ZyS3WA436r0kaULVrClFTBS_dCk17YgS0TDayAq_3EuMhfi
       - SESSION_KEY=8298439878c89238f92080384e82938928021d823483248782372087329473f84
+      - USE_SSL=false
+      - URL_BASE=http://localhost:5002
     command: /dlv --headless --listen=:40001 --api-version=2 exec /contact-api/server
+    volumes:
+      - contact-logs:/contact-api/logs
+      - contact-images:/contact-api/images
     depends_on:
       - db
 
@@ -65,3 +70,5 @@ services:
 
 volumes:
   photogrio-data:
+  contact-logs:
+  contact-images:

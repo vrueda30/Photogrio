@@ -1,4 +1,4 @@
-module server
+module account.api
 
 go 1.21
 

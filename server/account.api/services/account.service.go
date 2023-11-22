@@ -1,12 +1,12 @@
 package services
 
 import (
+	"account.api/auth0client"
+	"account.api/services/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"server/auth0client"
-	"server/services/models"
 )
 
 const accountPath = "accounts"
