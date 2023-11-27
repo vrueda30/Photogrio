@@ -25,7 +25,12 @@ func main() {
 	if err != nil {
 		fmt.Print(err)
 	}
-	log.Print(mydir)
+	env := os.Getenv("CONTACTS_API_ENV")
+	err = godotenv.Load(".env." + env)
+	if err != nil {
+		log.Print(err)
+	}
+
 	logPath := fmt.Sprintf("%s/%s/%s", mydir, "logs", "contact-api.log")
 	_, err = os.Stat(logPath)
 	if err != nil {
@@ -40,7 +45,6 @@ func main() {
 		log.Print(err)
 	}
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-	err = godotenv.Load()
 	if err != nil {
 		log.Print(err)
 	}

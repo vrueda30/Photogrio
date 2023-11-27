@@ -1,1 +1,14 @@
-docker-compose.dev.yml
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+*.out
+
+go.work
+
+.env
+.env.local
+.env.development
+.env.production
