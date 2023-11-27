@@ -62,10 +62,10 @@ services:
       - 3306:3306
     restart: always
     environment:
-      - MYSQL_USER=photogrioapi
-      - MYSQL_PASSWORD=irishvrlr30
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=photogriodb
-      - MYSQL_ROOT_PASSWORD=irishvrlr30
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - photogrio-data:/var/lib/mysql
 
