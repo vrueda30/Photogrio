@@ -34,7 +34,7 @@ type Address struct {
 	City      string `json:"city"`
 	State     string `json:"state"`
 	Zip       string `json:"zip"`
-	AccountId string `json:"accountId"`
+	AccountId int    `json:"accountId"`
 }
 
 type ContactDTO struct {

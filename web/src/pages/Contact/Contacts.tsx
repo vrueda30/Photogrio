@@ -1,18 +1,17 @@
 import {Button, Col, Container, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
-import ContactList from "../components/Contact/ContactList.tsx";
-import {CONTACT_API_BASE_URL} from "./api-routes.tsx"
+import ContactList from "../../components/Contact/ContactList.tsx";
+import {CONTACT_API_BASE_URL} from "../api-routes.tsx"
 import axios from "axios";
 import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useState} from "react";
 import {Cookies} from "react-cookie";
 import {Form, Formik} from "formik";
-import PTextInput from "../components/Common/PTextInput.tsx";
+import PTextInput from "../../components/Common/PTextInput.tsx";
 import * as Yup from 'yup'
-
 
 interface userFormProps {
     isOpen: boolean,
-    callback: () => void,
+    callback: (reload:boolean) => void,
 }
 
 const CreateUserForm = ({isOpen, callback}:userFormProps) => {
@@ -65,7 +64,7 @@ const CreateUserForm = ({isOpen, callback}:userFormProps) => {
                                 }).then((r) => {
                                     console.log(r)
                                     setSubmitting(false)
-                                    callback()
+                                    callback(true)
                                 })
                             })
                         }}
@@ -117,33 +116,46 @@ const CreateUserForm = ({isOpen, callback}:userFormProps) => {
 }
 export const Contacts = () => {
     const [modal, setModal] = useState(false)
-    const toggle = () => setModal(!modal)
+    const [loading, setLoading] = useState(true)
     const [contactData, setData] = useState([])
     const {getAccessTokenSilently} = useAuth0()
+    const toggle = (reload: boolean) =>{
+        if (reload) {
+            console.log("In toggle")
+            setLoading(true)
+            loadData()
+        }
+        setModal(!modal)
+    }
     const loadData = async () => {
-        console.log("In load data")
+
         const token = await getAccessTokenSilently()
         const cookie = new Cookies()
-        axios.get(`${CONTACT_API_BASE_URL}${cookie.get("user").accountId}`,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            },
-            withCredentials: true,
-        }).then((result)=> {
-                setData(result.data.data)
-                console.log(`contact data: ${contactData}`)
-            }
-
-        )
+        console.log("In load data")
+        try {
+            const result = await axios.get(`${CONTACT_API_BASE_URL}${cookie.get("user").accountId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true,
+            })
+            setData(result.data.data)
+        }catch (e){
+            console.log(e)
+        }finally {
+            setLoading(false)
+        }
     }
 
-    useEffect(() => {
-        loadData().then(()=>{})
-    },[])
 
-    return(
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    if (!loading){
+     return (
         <>
-            <CreateUserForm isOpen={modal} callback={toggle}/>
+        { modal && <CreateUserForm isOpen={modal} callback={toggle}/>}
             <Container fluid>
                 <Row className="client-header">
                     <Col className="d-flex justify-content-start align-items-center">
@@ -155,8 +167,11 @@ export const Contacts = () => {
                 </Row>
             </Container>
             <ContactList data={contactData} />
+
         </>
-    )
-};
+    )} else {
+        return (<>Loading...</>)
+     }
+    }
 
 export default Contacts;

@@ -1,7 +1,7 @@
 import {Outlet} from "react-router-dom";
 import NavBar from "./NavBar.tsx";
 import {Container} from "reactstrap";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
 import {GET_CONTACT_COOKIES, GET_USER_COOKIES} from "../pages/api-routes.tsx";
@@ -21,7 +21,6 @@ export const Layout = () => {
                 },
                 withCredentials:true
             }).then((r) => {
-                console.log("In response")
                 const cookies = new Cookies()
                     cookies.set('user', r.data, {path: '/'})
                     axios.get(GET_CONTACT_COOKIES + r.data.accountId, {

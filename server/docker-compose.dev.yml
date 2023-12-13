@@ -9,18 +9,19 @@ services:
       - "seccomp:unconfined"
     cap_add:
       - SYS_PTRACE
+    restart: always
     environment:
       - DB_HOST_NAME=photogriodb
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD = ${MYSQL_PASSWORD}
       - MYSQL_DATABASE = photogriodb
-      - AUTH0_APP_DOMAIN=https://photogrio.auth0.com/
+      - AUTH0_APP_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_APP_AUDIENCE=${AUTH0_APP_AUDIENCE}
       - AUTH0_DOMAIN=${AUTH0_LOGIN_DOMAIN}
-      - AUTH0_AUDIENCE=https://photogrio.auth0.com/api/v2/
-      - AUTH0_API_AUDIENCE=https://photogrio.auth0.com/api/v2/
+      - AUTH0_AUDIENCE=${AUTH0_API_AUDIENCE}
+      - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
       - AUTH0_AUTHORIZATION_URI=https://photogrio.auth0.com/oauth/token
-      - AUTH0_CLIENT_ID=ddlJicrbYRznyfMJVLMqnRkRfloQOPFh
+      - AUTH0_CLIENT_ID=${AUTH0_LOGIN_CLIENT_ID}
       - AUTH0_CLIENT_SECRET=${AUTH0_ACCOUNT_SECRET}
       - AUTH0_CONNECTION=Photogrio
       - SESSION_KEY=${SESSION_KEY}
@@ -30,6 +31,7 @@ services:
   contact-api:
     container_name: contact-api
     build: ./contacts.api
+    restart: always
     ports:
       - 5002:5002
       - 40001:40001
@@ -54,7 +56,33 @@ services:
       - contact-images:/contact-api/images
     depends_on:
       - db
-
+  scheduling-api:
+    container_name: scheduling-api
+    build: ./scheduling.api
+    restart: always
+    ports:
+      - 5003:5003
+      - 40003:40003
+    environment:
+      - SCHEDULING_API_ENV=development
+      - HOST_NAME=photogriodb
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=photogriodb
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
+      - AUTH0_AUTHORIZATION_URI=${AUTH0_AUTHORIZATION_URI}
+      - AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
+      - SESSION_KEY=${SESSION_KEY}
+      - USE_SSL=false
+      - URL_BASE=http://localhost:5003
+    command: /dlv --headless --listen=:40003 --api-version=2 exec /scheduling-api/server
+    volumes:
+      - scheduling-logs:/scheduling-api/logs
+    depends_on:
+      - db
   db:
     container_name: photogriodb
     image: mysql:latest
@@ -73,3 +101,4 @@ volumes:
   photogrio-data:
   contact-logs:
   contact-images:
+  scheduling-logs:

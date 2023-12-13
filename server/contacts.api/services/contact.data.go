@@ -11,7 +11,7 @@ import (
 
 func GetContact(contactId int, accountId int) (*models.Contact, error) {
 	var contact = &models.Contact{}
-	res := data.DB.Where("id=? AND account_id=?", contactId, accountId).First(&contact)
+	res := data.DB.Where("id=? AND account_id=?", contactId, accountId).Preload("Address").First(&contact)
 	if res.Error != nil {
 		log.Print(res.Error)
 		return nil, res.Error
@@ -64,4 +64,36 @@ func GetContactsForAccount() ([]models.Contact, error) {
 		return nil, res.Error
 	}
 	return *contacts, nil
+}
+
+func UpdateContact(updatedContact *models.Contact, accountId int) error {
+	var contact *models.Contact
+	res := data.DB.Where("id = ? AND account_id = ?", updatedContact.ID, accountId).First(&contact)
+	if res.Error != nil || res.RowsAffected < 1 {
+		log.Print(res.Error)
+		return errors.New("Unable to update contact")
+	}
+
+	contact.FirstName = updatedContact.FirstName
+	contact.LastName = updatedContact.LastName
+	contact.Email = updatedContact.Email
+	contact.Phone = updatedContact.Phone
+	contact.ContactType = updatedContact.ContactType
+	contact.BirthDay = updatedContact.BirthDay
+	contact.Notes = updatedContact.Notes
+	contact.AddressId = updatedContact.AddressId
+	contact.Address = updatedContact.Address
+	contact.Address.AccountId = middleware.Cookie.AccountId
+	res = data.DB.Save(&contact)
+
+	return nil
+}
+
+func CreateAddress(address *models.Address) error {
+	if res := data.DB.Create(&address); res.Error != nil {
+		log.Print(res.Error)
+		return res.Error
+	}
+	log.Printf("Address id from create: %d", address.ID)
+	return nil
 }

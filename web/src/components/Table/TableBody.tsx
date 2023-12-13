@@ -1,4 +1,4 @@
-import React, {ReactComponentElement} from "react";
+import React, {ReactComponentElement, useState} from "react";
 
 interface Column{
     label: string,
@@ -13,12 +13,12 @@ interface Tbprops {
 
 const buildrow = (row:object, headers:Column[] | undefined | null,rowIndex:number = 2) => {
     return (
-        <tr key={row.ID} className={rowIndex % 2 ? "even-row":"odd-row"}>
+        <tr key={row.ID} className={rowIndex % 2 ? "even-row table-row":"odd-row table-row"}>
             {headers.map((value, index) => {
                 if (value.formatter){
                     return value.formatter(row[value.accessor],row.ID)
                 }else {
-                    return <td key={index}>{row[value.accessor]}</td>
+                    return <td className="table-cell" id={index}>{row[value.accessor]}</td>
                 }
             })}
         </tr>
@@ -26,8 +26,6 @@ const buildrow = (row:object, headers:Column[] | undefined | null,rowIndex:numbe
 }
 
 const TableBody = ({...props}:Tbprops) => {
-    console.log("In table body")
-    console.log(`Data = ${props.data}`)
     return(
         <tbody className="grid-body">
         {props.data && props.data.map((value,index) => {

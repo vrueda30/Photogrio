@@ -24,14 +24,13 @@ const RenderNoData = (msg?:string) => {
     )
 }
 const Table = ({...props}:(DataProps)) => {
-
     return(
         <>
             <table className="p-table">
                 <TableHeader columns={props.columns} cssColClass={props.cssColClass === undefined ? undefined : props.cssColClass } />
                 <TableBody columns={props.columns} data={props.data} />
             </table>
-            {!props.data && RenderNoData(props.noDataMsg)}
+            {props.data?.length == 0 && RenderNoData(props.noDataMsg)}
         </>
     )
 }

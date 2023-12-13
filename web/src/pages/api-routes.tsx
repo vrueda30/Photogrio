@@ -5,3 +5,4 @@ export const GET_USER_COOKIES = "http://localhost:5001/api/users/get_user_sessio
 export const GET_CONTACT_COOKIES="http://localhost:5002/api/contacts/get_cookies/"
 
 export const CONTACT_API_BASE_URL = import.meta.env.VITE_CONTACT_API_URL
+export const SCHEDULING_API_BASE_URL = import.meta.env.VITE_SCHEDULING_API_URL

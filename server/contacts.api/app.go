@@ -48,7 +48,6 @@ func main() {
 	if err != nil {
 		log.Print(err)
 	}
-	SeedData()
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -73,6 +72,7 @@ func main() {
 	router.Static("/images", "./images")
 	dsn := data.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	SeedData()
 	if err != nil {
 		log.Fatal(err)
 	}

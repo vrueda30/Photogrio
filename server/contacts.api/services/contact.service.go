@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -38,6 +39,7 @@ func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	router.GET(fmt.Sprintf("%s/%s/:accountId", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), getContacts)
 	router.GET(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "get_contact"), middleware.CheckJWT(), middleware.ReadCookie(), getContact)
 	router.POST(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "save_profile_avatar"), middleware.CheckJWT(), middleware.ReadCookie(), uploadProfilePicForContact)
+	router.PUT(fmt.Sprintf("%s/%s/", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), updateContact)
 }
 
 func getContact(ctx *gin.Context) {
@@ -150,11 +152,16 @@ func getContacts(ctx *gin.Context) {
 	}
 
 	var data = convertToContactViewList(res)
+	log.Printf("Converted data %s", data)
 	ctx.JSON(http.StatusOK, gin.H{"data": data})
 	return
 }
 
 func convertToContactViewList(contacts []models.Contact) *[]models.ContactViewDTO {
+	sort.SliceStable(contacts, func(i, j int) bool {
+		return contacts[i].LastName < contacts[j].LastName
+	})
+	log.Print(contacts)
 	contactList := []models.ContactViewDTO{}
 	for i := 0; i < len(contacts); i++ {
 		contact := models.ContactViewDTO{ID: int(contacts[i].ID),
@@ -167,12 +174,43 @@ func convertToContactViewList(contacts []models.Contact) *[]models.ContactViewDT
 	return &contactList
 }
 
+func updateContact(ctx *gin.Context) {
+	var updatedContact *models.Contact
+	accountId := middleware.Cookie.AccountId
+	if err := ctx.ShouldBindJSON(&updatedContact); err != nil {
+		log.Print(err)
+		log.Print(accountId)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if updatedContact.AddressId == 0 {
+		var address = models.Address{Address1: updatedContact.Address.Address1, Address2: updatedContact.Address.Address2, City: updatedContact.Address.City,
+			State: updatedContact.Address.State, Zip: updatedContact.Address.Zip, AccountId: middleware.Cookie.AccountId}
+		if err := CreateAddress(&address); err != nil {
+			handleError(err, ctx)
+			return
+		}
+		updatedContact.AddressId = int(address.ID)
+		updatedContact.Address = address
+	}
+
+	log.Printf("Address id post db create: %d", updatedContact.AddressId)
+	if err := UpdateContact(updatedContact, accountId); err != nil {
+		handleError(err, ctx)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &updatedContact)
+	return
+}
+
 func createContact(context *gin.Context) {
 	var newContact *models.ContactDTO
 	accountId := middleware.Cookie.AccountId
-	log.Print(accountId)
 	if err := context.ShouldBindJSON(&newContact); err != nil {
 		log.Print(err)
+		log.Print(accountId)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

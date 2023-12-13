@@ -1,7 +1,7 @@
 import {Row} from "reactstrap";
 import {Avatar} from "@files-ui/react";
 import './components.css'
-import {CSSProperties, useEffect, useState} from "react";
+import {CSSProperties} from "react";
 
 export interface ProfileFile{
     name: string;
@@ -11,6 +11,7 @@ export interface ProfileFile{
 export interface ProfileProps {
     callback: (file:ProfileFile) => void;
     imageSource?: string | undefined | globalThis.File;
+    readOnly?: boolean
 }
 
 const  ProfileImage = (props:ProfileProps) => {
@@ -18,7 +19,7 @@ const  ProfileImage = (props:ProfileProps) => {
     return(
         <div className="w-100">
             <Row className="w-100 justify-content-center">
-                <Avatar src={props.imageSource} variant="circle"
+                <Avatar readOnly={props?.readOnly ? props.readOnly : false}  src={props.imageSource} variant="circle"
                         style={{width:100, height:100} as CSSProperties}
                         onChange={async (r) => {
                             const profile = {
@@ -27,7 +28,9 @@ const  ProfileImage = (props:ProfileProps) => {
                                 url:""
                             }
                             props.callback(profile)
-                }} accept="image/*"/>
+                }} accept="image/*"
+                changeLabel="Click to change image"
+                />
             </Row>
             <Row className="d-flex w-100">
 

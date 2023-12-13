@@ -24,7 +24,7 @@ func ReadCookie() gin.HandlerFunc {
 		err = json.Unmarshal(plainText, &Cookie)
 		log.Printf("plain text: %s", plainText)
 		common.HandlePanicError(err)
-		log.Printf("Cookie account id: %s")
+		log.Printf("Cookie account id: %n", Cookie.AccountId)
 		context.Next()
 	}
 }

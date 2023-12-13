@@ -14,8 +14,9 @@ import AuthProviderWithCallback from "./auth/AuthProviderWithCallback.tsx";
 import ProtectedRoute from "./auth/ProtectedRoute.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Register from "./pages/Register.tsx"
-import {Contacts} from "./pages/Contacts.tsx";
-import {EditContact} from "./pages/EditContact.tsx";
+import {Contacts} from "./pages/Contact/Contacts.tsx";
+import {EditContact} from "./pages/Contact/EditContact.tsx";
+import CalendarPage from "./pages/CalendarPage.tsx";
 
 
 initFontAwesome();
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
             {
                 path: "/contact/:contactId",
                 element: <EditContact />
+            },
+            {
+                path: "/calendar",
+                element: <CalendarPage />
             }
         ]
     },

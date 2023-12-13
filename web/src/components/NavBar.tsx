@@ -13,9 +13,9 @@ export const NavBar = () => {
       <div className="nav-container p-nav-bar">
           <Navbar color="light" light expand="md" container={false}>
               <Container className="p-nav">
-              <NavbarBrand>Photogrio</NavbarBrand>
+                  <NavbarBrand><h1>Photogrio</h1></NavbarBrand>
               <NavbarToggler onClick={toggle} />
-              <Collapse isOpen={isOpen} navbar>
+              <Collapse isOpen={isOpen} className="justify-content-end me-5" navbar>
                   <Nav className="mr-auto" navbar>
                       <NavItem>
                           <Container>
@@ -28,7 +28,7 @@ export const NavBar = () => {
                               to="/"
                               className="router-link-exact-active"
                               exact
-                              >Home</NavLink>
+                              >Dashboard</NavLink>
                               </Row>
                           </Container>
                       </NavItem>
@@ -42,7 +42,49 @@ export const NavBar = () => {
                                       tag={RouterNavLink}
                                       to="/contacts"
                                       exact
-                                      activeClassName="router-link-exact-active">Clients</NavLink>
+                                      activeClassName="router-link-exact-active">Contacts</NavLink>
+                              </Row>
+                          </Container>
+                      </NavItem>
+                      <NavItem>
+                          <Container>
+                              <Row>
+                                  <FontAwesomeIcon icon="calendar" className="mr-3 menu-icon" />
+                              </Row>
+                              <Row>
+                                  <NavLink
+                                      tag={RouterNavLink}
+                                      to="/calendar"
+                                      exact
+                                      activeClassName="router-link-exact-active">Calendar</NavLink>
+                              </Row>
+                          </Container>
+                      </NavItem>
+                      <NavItem>
+                          <Container>
+                              <Row>
+                                  <FontAwesomeIcon icon="camera" className="mr-3 menu-icon" />
+                              </Row>
+                              <Row>
+                                  <NavLink
+                                      tag={RouterNavLink}
+                                      to="/jobs"
+                                      exact
+                                      activeClassName="router-link-exact-active">Jobs</NavLink>
+                              </Row>
+                          </Container>
+                      </NavItem>
+                      <NavItem>
+                          <Container>
+                              <Row>
+                                  <FontAwesomeIcon icon="file" className="mr-3 menu-icon" />
+                              </Row>
+                              <Row>
+                                  <NavLink
+                                      tag={RouterNavLink}
+                                      to="/documents"
+                                      exact
+                                      activeClassName="router-link-exact-active">Documents</NavLink>
                               </Row>
                           </Container>
                       </NavItem>

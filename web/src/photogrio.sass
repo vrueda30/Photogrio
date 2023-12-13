@@ -1,4 +1,5 @@
 @import "colors"
+@import "../node_modules/react-big-calendar/lib/sass/styles"
 
 body
   padding: 0
@@ -36,13 +37,15 @@ p
 p > *:last-child
   margin-bottom: 0
 
+.navbar-brand h1
+  color: $orange-800
 
 .main-container
   padding: 2rem
-
+  min-height: 600px
 
 .menu-icon
-  font-size: 1.75em
+  font-size: 1.5em
   padding: .1rem
 
 .page-error
@@ -99,16 +102,16 @@ textarea:focus
 .p-table
   margin-top: 25px
   width: 100%
+  box-shadow: $black-transparent 2px 2px 1px
 
 .p-table-col-header
   min-width: 150px
   padding: .25rem
 
-.p-table-header-box
-  border-style: solid
-  border-width: .08rem
-  border-color: $gray-400
-  border-radius: 5rem 5rem 0 0
+.p-table-header-box th
+  background-color: $blue-100
+  border: .08rem solid $gray-400
+  border-bottom-width: 0
 
 .p-table-no-data
   width: 100%
@@ -124,19 +127,20 @@ textarea:focus
   height: 45px
 
 .odd-row
-  background-color: $blue-transparent
   height: 40px
   font-size: 16px
   border-bottom: solid
   border-width: .08rem
   border-color: $gray-400
 .even-row
-  background-color: $gray-transparent
+  background-color: $gray-200
   height: 40px
   font-size: 16px
   border-bottom: solid
   border-width: .08rem
   border-color: $gray-400
+.table-cell
+  border-right: $gray-400 .08rem solid
 .grid-body
   border-style: solid
   border-width: .08rem
@@ -147,6 +151,37 @@ textarea:focus
   border-color: $gray-400
   margin-top: 3rem
   border-width: .08rem
+
+.p-label
+  font-weight: normal
+
+.table-row
+  font-size: .8rem
+  height: .09rem
+
+.contact-link
+  font-weight: bold
+
+.contact-card
+  border: $gray-400 .08rem solid
+  max-width: 800px
+  min-height: 400px
+  box-shadow: $gray-transparent 2px 2px 2px
+  border-radius: 10px
+
+.contact-card-header
+  border-bottom: $gray-400 .08rem solid
+
+.row-divider
+  border-bottom: $gray-400 .08rem solid
+
+.edit-pencil
+  color: $blue-500
+.edit-pencil:hover
+  cursor: pointer
+
+.calendar
+  min-height: 800px
 
 
 
