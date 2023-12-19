@@ -1,6 +1,12 @@
-import {useField} from "formik";
+import {FieldHookConfig, useField} from "formik";
+import {Props} from "./interfaces.ts";
 
+//const PTextInput = ({label, ...props}) => {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const PTextInput = ({label, ...props}) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const [field, meta] = useField(props);
     return (
         <div>

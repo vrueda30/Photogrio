@@ -15,6 +15,7 @@ type Job struct {
 	gorm.Model
 	Name      string       `json:"name"`
 	AccountId int          `json:"accountId"`
+	JobId     int          `json:"jobId"`
 	Job       JobType      `json:"job"`
 	Location  string       `json:"location"`
 	JobDate   sql.NullTime `json:"jobDate"`

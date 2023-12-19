@@ -10,10 +10,13 @@ import (
 	"io"
 	"job.api/data"
 	"job.api/models"
+	"job.api/services"
 	"log"
 	"os"
 	"time"
 )
+
+const apiBasePath = "api"
 
 func main() {
 	log.Print("Starting job api")
@@ -72,7 +75,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//services.SetupRoutes(router, apiBasePath)
+	services.SetupRoutes(router, apiBasePath)
 
 	port := os.Getenv("PORT")
 	if port == "" {

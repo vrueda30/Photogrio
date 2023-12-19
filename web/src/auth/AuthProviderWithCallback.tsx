@@ -3,11 +3,12 @@ import {useNavigate} from "react-router-dom";
 
 const AuthProviderWithCallback = ({children, ...props}) => {
     const navigate = useNavigate();
-    const onRedirectCallback = (appState) => {
-        navigate((appState && appState.returnTo) || window.location.pathname)
+    const onRedirectCallback = () => {
+        //navigate((appState && appState.returnTo) || window.location.pathname)
+        navigate("/")
     }
     return (
-        <Auth0Provider onRedirectCallback={onRedirectCallback} {...props}>
+        <Auth0Provider onRedirectCallback={onRedirectCallback} domain={props.domain} clientId={props.clientId} {...props}>
             {children}
         </Auth0Provider>
     )

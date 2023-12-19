@@ -3,11 +3,11 @@ package middleware
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"job.api/common"
+	"job.api/models"
+	"job.api/security"
 	"log"
 	"os"
-	"scheduling.api/common"
-	"scheduling.api/models"
-	"scheduling.api/security"
 )
 
 var Cookie *models.Cookie

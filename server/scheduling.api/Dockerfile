@@ -16,7 +16,7 @@ RUN apt-get install -y ca-certificates
 RUN update-ca-certificates
 RUN apt update
 RUN apt install nano
-EXPOSE 5004 40004
+EXPOSE 5003 40003
 WORKDIR /scheduling-api
 COPY --from=build-env /go/bin/dlv /
-COPY --from=build-env /server /job-api/
+COPY --from=build-env /server /scheduling-api/
