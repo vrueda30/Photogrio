@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"io"
@@ -24,11 +23,6 @@ func main() {
 	mydir, err := os.Getwd()
 	if err != nil {
 		fmt.Print(err)
-	}
-	env := os.Getenv("SCHEDULING_API_ENV")
-	err = godotenv.Load(".env." + env)
-	if err != nil {
-		log.Print(err)
 	}
 
 	logPath := fmt.Sprintf("%s/%s/%s", mydir, "logs", "scheduling-api.log")

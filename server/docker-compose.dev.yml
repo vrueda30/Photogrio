@@ -11,6 +11,7 @@ services:
       - SYS_PTRACE
     restart: always
     environment:
+      - ENVIRONMENT=development
       - DB_HOST_NAME=photogriodb
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD = ${MYSQL_PASSWORD}

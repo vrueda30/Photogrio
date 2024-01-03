@@ -29,6 +29,8 @@ func main() {
 	err = godotenv.Load(".env." + env)
 	if err != nil {
 		log.Print(err)
+	} else {
+		log.Print("Environment loaded")
 	}
 
 	logPath := fmt.Sprintf("%s/%s/%s", mydir, "logs", "contact-api.log")

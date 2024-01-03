@@ -7,8 +7,9 @@ import (
 
 type JobType struct {
 	gorm.Model
-	Name      string `json:"name"`
-	AccountId int    `json:"accountId"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	AccountId   int    `json:"accountId"`
 }
 
 type Job struct {

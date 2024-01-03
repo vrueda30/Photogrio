@@ -2,6 +2,7 @@ package services
 
 import (
 	"account.api/auth0client"
+	"account.api/middleware"
 	"account.api/services/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,29 @@ const accountPath = "accounts"
 func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	accounts := router.Group(fmt.Sprintf("%s/%s/", apiBasePath, accountPath))
 	accounts.POST(fmt.Sprintf("%s", "create_account"), createAccount)
+	accounts.GET(fmt.Sprintf("%s", "setup_status"), middleware.CheckJWT(), middleware.ReadCookie(), getSetupStatus)
+	accounts.GET(fmt.Sprintf("%s", "update_setup_status"), middleware.CheckJWT(), middleware.ReadCookie(), updateStatus)
+}
+
+func updateStatus(context *gin.Context) {
+	id := middleware.Account.AccountId
+	err := IncrementSetupStep(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"status": "ok"})
+	return
+}
+
+func getSetupStatus(context *gin.Context) {
+	res, err := GetSetupStatus(int(middleware.Account.AccountId))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"setupStep": res})
+	return
 }
 
 func createAccount(context *gin.Context) {
@@ -51,4 +75,13 @@ func createAccount(context *gin.Context) {
 	}
 	context.JSON(http.StatusCreated, gin.H{"id": res})
 	return
+}
+func Login() error {
+
+	return nil
+}
+
+func CreateLists(accountId int) error {
+	//http.Post()
+	return nil
 }

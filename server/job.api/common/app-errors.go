@@ -8,3 +8,9 @@ func HandlePanicError(err error) {
 		panic(err.Error)
 	}
 }
+
+func HandleError(err error) {
+	if err != nil {
+		log.Print(err)
+	}
+}

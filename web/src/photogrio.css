@@ -831,6 +831,7 @@ textarea:focus {
 
 .table-cell {
   border-right: #cbd5e0 0.08rem solid;
+  height: 100% !important;
 }
 
 .grid-body {

@@ -17,6 +17,7 @@ import Register from "./pages/Register.tsx"
 import {Contacts} from "./pages/Contact/Contacts.tsx";
 import {EditContact} from "./pages/Contact/EditContact.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
+import {registerLicense} from '@syncfusion/ej2-base'
 
 
 initFontAwesome();
@@ -67,6 +68,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />
     }
 ])
+
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF1cWmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEFjWH9dcHdWQWVbWURyVw==')
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

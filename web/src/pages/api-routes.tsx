@@ -6,3 +6,6 @@ export const GET_CONTACT_COOKIES="http://localhost:5002/api/contacts/get_cookies
 
 export const CONTACT_API_BASE_URL = import.meta.env.VITE_CONTACT_API_URL
 export const SCHEDULING_API_BASE_URL = import.meta.env.VITE_SCHEDULING_API_URL
+export const GET_ACCOUNT_SETUP_STATUS_URL = import.meta.env.VITE_ACCOUNT_SETUP_STATUS_URL
+export const JOB_API_BASE_URL = import.meta.env.VITE_JOB_API_URL
+export const ACCOUNT_API_BASE_URL = import.meta.env.VITE_ACCOUNT_API_URL

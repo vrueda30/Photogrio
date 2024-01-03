@@ -1,7 +1,6 @@
 import Table from"../Table/Table.tsx"
 import {Nav, NavItem, NavLink} from "reactstrap";
 import {NavLink as RouterNavLink} from 'react-router-dom'
-import {useEffect} from "react";
 
 
 interface props{
@@ -26,16 +25,14 @@ export const ContactList = ({data}:props) => {
         }
 
         return(
-            <>
-                {contactTypeName}
-            </>
+                <td className="table-cell justify-content-center">{contactTypeName}</td>
         )
     }
 
     const dataColumns = [
         {label: "Name", accessor: "name", formatter: (value:never,key?:never) => {
                 return(
-                    <div className="d-flex justify-content-center table-cell">
+                    <div className="justify-content-center table-cell">
                     <Nav>
                         <NavItem>
                             <NavLink tag={RouterNavLink} to={`/contact/${key}`} className="router-link-exact-active contact-link">{value}</NavLink>

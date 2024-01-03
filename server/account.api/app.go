@@ -29,9 +29,12 @@ func main() {
 	log.Print(f.Name())
 
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-	err := godotenv.Load()
+	env := os.Getenv("ENVIRONMENT")
+	err := godotenv.Load(".env." + env)
 	if err != nil {
 		log.Print(err)
+	} else {
+		log.Print("Environment loaded")
 	}
 
 	router := gin.Default()
@@ -61,7 +64,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	err = db.AutoMigrate(&models.Account{}, &models.User{})
 
 	if err != nil {

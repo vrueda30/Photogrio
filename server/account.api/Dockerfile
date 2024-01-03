@@ -15,8 +15,11 @@ RUN apt-get update
 RUN apt-get install -y ca-certificates
 RUN update-ca-certificates
 EXPOSE 5001 40000
-WORKDIR /
+WORKDIR /photogrio/
+COPY .env.development /photogrio/
 RUN mkdir -p /logs/
+RUN apt update
+RUN apt install nano
 COPY --from=build-env /go/bin/dlv /
 COPY --from=build-env /server /photogrio/
 
