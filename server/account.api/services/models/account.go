@@ -9,6 +9,7 @@ type Account struct {
 	Owner       User   `json:"owner"`
 	CompanyName string `json:"companyName"`
 	IsActive    bool   `json:"isActive"`
+	SetupStep   int    `json:"setupStep" gorm:"default:1"`
 }
 
 type Signup struct {

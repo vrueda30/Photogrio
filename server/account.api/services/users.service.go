@@ -49,7 +49,7 @@ func getUserSessionInfo(context *gin.Context) {
 	cipherText := security.Encrypt(acctAsBytes, os.Getenv("SESSION_KEY"))
 	log.Print(cipherText)
 
-	context.SetCookie("account", string(cipherText), 0, "/", "localhost", false, true)
+	context.SetCookie("account", string(cipherText), 60*60*24, "/", "localhost", false, true)
 
 	context.JSON(http.StatusOK, res)
 	return
