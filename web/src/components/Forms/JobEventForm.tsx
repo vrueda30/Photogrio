@@ -1,12 +1,15 @@
-import {Modal, ModalBody, ModalHeader} from "reactstrap";
+import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import {Formik} from "formik";
 import PTextInput from "../Common/PTextInput.tsx";
 import PDateRangePicker from "../Common/PDateRangePicker.tsx";
 import PSelect from "../Common/PSelect.tsx";
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
-import {JOB_API_BASE_URL} from "../../pages/api-routes.tsx";
+import {CONTACT_API_BASE_URL, JOB_API_BASE_URL} from "../../pages/api-routes.tsx";
 import axios from "axios";
+import {ContactListView} from "../Contact/interfaces.ts";
+import './photogrio-forms.css'
+import PTextArea from "../Common/PTextArea.tsx";
 
 export interface JobEventProps {
     startDateTime: Date,
@@ -32,6 +35,18 @@ interface JobTypes{
 const JobEventForm = (props:JobEventProps) => {
     const {getAccessTokenSilently} = useAuth0()
     const [jobTypes, setJobTypes] = useState<JobTypes[]>([])
+    const [contacts, setContacts] = useState<ContactListView[]>([])
+
+    const GetContacts = async(token:string):Promise<ContactListView[]> => {
+        const res = await axios.get(`${CONTACT_API_BASE_URL}getContactsForAccount`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+        })
+
+        return res.data.data
+    }
     useEffect(() => {
         const loadJobTypes = async() => {
             const token = await getAccessTokenSilently()
@@ -42,6 +57,8 @@ const JobEventForm = (props:JobEventProps) => {
                 withCredentials: true
             })
             setJobTypes(res.data)
+            const conRes = await GetContacts(token)
+            setContacts(conRes)
         }
 
         loadJobTypes()
@@ -62,20 +79,44 @@ const JobEventForm = (props:JobEventProps) => {
                         startDateTime:props.startDateTime,
                         endDateTime:props.endDateTime,
                         allDay: false}} onSubmit={submit}>
-                        <div>
-                        <PTextInput
-                            label="Event Name"
-                            id="eventName"
-                            name="eventName"
-                            type="text"
-                            className="form-control"
-                            />
-                            <PSelect label="Job Type" name="jobType" className="form-control">
-                                <option value={-1} className="form-control">Select Job</option>
-                                {jobTypes.map((jt) => <option value={jt.id}>{jt.name}</option>)}
-                            </PSelect>
-                            <PDateRangePicker label= "Start" name="startDateTime"  value={props.startDateTime} />
-                            <PDateRangePicker  label="End" name="endDateTime" min={props.startDateTime} value={props.endDateTime} class="form-control" />
+                        <div className="job-form">
+                            <div className="job-form-field">
+                                <PTextInput
+                                    label="Event Name"
+                                    id="eventName"
+                                    name="eventName"
+                                    type="text"
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="job-form-field">
+                                <PSelect label="Client" name="client" className="form-control">
+                                    <option value={-1} className="form-control">Select Client</option>
+                                    {contacts.map((ct) => <option value={ct.id}>{ct.name}</option>)}
+                                </PSelect>
+                            </div>
+                            <div className="job-form-field">
+                                <PSelect label="Job Type" name="jobType" className="form-control">
+                                    <option value={-1} className="form-control">Select Job</option>
+                                    {jobTypes.map((jt) => <option value={jt.id}>{jt.name}</option>)}
+                                </PSelect>
+                            </div>
+                            <div className="job-form-field">
+                                <PDateRangePicker label= "Start" name="startDateTime"  value={props.startDateTime} />
+                            </div>
+                            <div className="job-form-field">
+                                <PDateRangePicker  label="End" name="endDateTime" min={props.startDateTime} value={props.endDateTime} class="form-control" />
+                            </div>
+                            <div className="job-form-field">
+                                <PTextInput label="Location" name="location" id="location" type="textarea" className="form-control" />
+                            </div>
+                            <div className="job-form-field">
+                                <PTextArea label="Notes" name="notes" id="notes" className="form-control" />
+                            </div>
+                            <div className="d-flex justify-content-end btn-row">
+                                    <Button className="btn btn-secondary">Cancel</Button>
+                                    <Button color="success" className="btn btn-primary">Save</Button>
+                            </div>
                         </div>
                     </Formik>
                 </ModalBody>

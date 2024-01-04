@@ -51,6 +51,13 @@ type ContactDTO struct {
 	AccountId   int    `json:"accountId"`
 }
 
+type ContactListDTO struct {
+	ID        uint   `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Name      string `json:"name"`
+}
+
 type ContactViewDTO struct {
 	ID          int    `json:"ID"`
 	Name        string `json:"name"`

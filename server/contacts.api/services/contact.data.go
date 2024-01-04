@@ -55,6 +55,20 @@ func CreateNewContact(contact *models.Contact) error {
 	return nil
 }
 
+func GetContactListForAccount() ([]models.ContactListDTO, error) {
+	accountId := middleware.Cookie.AccountId
+	var contacts = &[]models.ContactListDTO{}
+	res := data.DB.Table("contacts").
+		Select("id", "first_name", "last_name", "CONCAT(first_name, ' ', last_name) as name").
+		Where("account_id=?", accountId).
+		Scan(&contacts)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return *contacts, nil
+}
+
 func GetContactsForAccount() ([]models.Contact, error) {
 	var id = middleware.Cookie.AccountId
 	var contacts = &[]models.Contact{}

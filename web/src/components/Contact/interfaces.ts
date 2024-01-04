@@ -17,6 +17,13 @@ export interface Contact {
     zip: string,
 }
 
+export interface ContactListView {
+    id: number,
+    firstName: string,
+    lastName: string,
+    name: string,
+}
+
 export interface Address {
     ID?: number | undefined,
     address1?: string,

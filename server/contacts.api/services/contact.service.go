@@ -37,9 +37,27 @@ func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	router.POST(fmt.Sprintf("%s/%s/%s/:accountId", apiBasePath, contactPath, "create_contact"), middleware.CheckJWT(), middleware.ReadCookie(), createContact)
 	router.GET(fmt.Sprintf("%s/%s/%s/:accountId", apiBasePath, contactPath, "get_cookies"), middleware.CheckJWT(), getContactServiceCookie)
 	router.GET(fmt.Sprintf("%s/%s/:accountId", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), getContacts)
+	router.GET(fmt.Sprintf("%s/%s/getContactsForAccount", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), getContactsForAccount)
 	router.GET(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "get_contact"), middleware.CheckJWT(), middleware.ReadCookie(), getContact)
 	router.POST(fmt.Sprintf("%s/%s/%s/:contactId", apiBasePath, contactPath, "save_profile_avatar"), middleware.CheckJWT(), middleware.ReadCookie(), uploadProfilePicForContact)
 	router.PUT(fmt.Sprintf("%s/%s/", apiBasePath, contactPath), middleware.CheckJWT(), middleware.ReadCookie(), updateContact)
+}
+
+func getContactsForAccount(ctx *gin.Context) {
+	log.Print("In get contacts")
+	res, err := GetContactListForAccount()
+	log.Print("Out of get contacts")
+
+	if err != nil {
+		log.Print(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var data = res
+	log.Printf("Converted data %s", data)
+	ctx.JSON(http.StatusOK, gin.H{"data": data})
+	return
 }
 
 func getContact(ctx *gin.Context) {
