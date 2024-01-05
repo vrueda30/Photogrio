@@ -8,11 +8,21 @@ import './common.css'
 const PDateRangePicker = ({label, ...props}) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const [field, meta] = useField(props);
+    const [field, meta,helpers] = useField(props);
+    const {setValue} = helpers
     return(
         <div>
-            <div>{label}</div>
-            <DateTimePickerComponent {...field} {...props} />
+            <label htmlFor={props.id || props.name} className="p-label">{label}</label>
+            <DateTimePickerComponent  {...field} {...props} onBlur={(v)=>{
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                setValue(v.target.value).catch(async (e) => {
+                    console.log(`Error setting field: ${e.error.value}`)
+                })
+            }} />
+            {meta.touched && meta.error ? (
+                <div className="error">{meta.error}</div>
+            ) : null}
         </div>
     )
 }
