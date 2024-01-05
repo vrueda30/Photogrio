@@ -1,5 +1,5 @@
 import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
-import {Formik} from "formik";
+import {Form, Formik} from "formik";
 import PTextInput from "../Common/PTextInput.tsx";
 import PDateRangePicker from "../Common/PDateRangePicker.tsx";
 import PSelect from "../Common/PSelect.tsx";
@@ -10,6 +10,7 @@ import axios from "axios";
 import {ContactListView} from "../Contact/interfaces.ts";
 import './photogrio-forms.css'
 import PTextArea from "../Common/PTextArea.tsx";
+import {JobsCreateDTO} from "../../interfaces/jobs.ts";
 
 export interface JobEventProps {
     startDateTime: Date,
@@ -18,18 +19,21 @@ export interface JobEventProps {
     toggle: () => void
 }
 
-interface Values {
-    eventName: string,
-    startDateTime: Date,
-    endDateTime: Date,
-    allDay: boolean
-}
-
 interface JobTypes{
     id: number,
     name: string,
     description: string,
     accountId: number
+}
+
+const CreateJob = async (job:JobsCreateDTO, token:string):Promise<string | null> => {
+    const res = await axios.post(`${JOB_API_BASE_URL}create_job`,job, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+    })
+    return await res.data.status
 }
 
 const JobEventForm = (props:JobEventProps) => {
@@ -56,29 +60,56 @@ const JobEventForm = (props:JobEventProps) => {
                 },
                 withCredentials: true
             })
+            console.log(res.data)
             setJobTypes(res.data)
             const conRes = await GetContacts(token)
             setContacts(conRes)
         }
 
-        loadJobTypes()
+        loadJobTypes().catch(() => {
+            console.log("Error loading jobs")
+        })
     }, [getAccessTokenSilently]);
-
-    const submit = async (values:Values) => {
-        alert(JSON.stringify(values))
-    }
-
-
 
     return(
         <div>
             <Modal isOpen={props.modal}>
                 <ModalHeader toggle={props.toggle}>New Event</ModalHeader>
                 <ModalBody>
-                    <Formik initialValues={{eventName: '',
+                    <Formik initialValues={{
+                        eventName: '',
+                        client: 0,
                         startDateTime:props.startDateTime,
                         endDateTime:props.endDateTime,
-                        allDay: false}} onSubmit={submit}>
+                        jobType: 0,
+                        location: '',
+                        notes: '',
+                        allDay: false}}
+                            onSubmit={async (values,{setSubmitting}) => {
+                                console.log(JSON.stringify(values))
+                                setSubmitting(true)
+                                const newJob:JobsCreateDTO = {
+                                    id: 0,
+                                    name: values.eventName,
+                                    location: values.location,
+                                    jobDateStart: new Date(values.startDateTime),
+                                    jobDateEnd: new Date(values.endDateTime),
+                                    allDay: values.allDay,
+                                    notes: values.notes,
+                                    jobType: Number(values.jobType),
+                                    client: Number(values.client)
+                                }
+                                const token = await getAccessTokenSilently()
+                                console.log(JSON.stringify(values))
+                                const res = await CreateJob(newJob, token)
+                                if (res !== "success") {
+                                    console.log("Error creating job")
+                                } else {
+                                    props.toggle()
+                                }
+                                setSubmitting(false)
+                            }}>
+                        <Form>
                         <div className="job-form">
                             <div className="job-form-field">
                                 <PTextInput
@@ -97,12 +128,12 @@ const JobEventForm = (props:JobEventProps) => {
                             </div>
                             <div className="job-form-field">
                                 <PSelect label="Job Type" name="jobType" className="form-control">
-                                    <option value={-1} className="form-control">Select Job</option>
-                                    {jobTypes.map((jt) => <option value={jt.id}>{jt.name}</option>)}
+                                    <option value={0} className="form-control">Select Job</option>
+                                    {jobTypes.map((jt) => <option value={jt.ID}>{jt.name}</option>)}
                                 </PSelect>
                             </div>
                             <div className="job-form-field">
-                                <PDateRangePicker label= "Start" name="startDateTime"  value={props.startDateTime} />
+                                <PDateRangePicker label= "Start" name="startDateTime" blur={()=>{alert('value changed')}}  value={props.startDateTime} />
                             </div>
                             <div className="job-form-field">
                                 <PDateRangePicker  label="End" name="endDateTime" min={props.startDateTime} value={props.endDateTime} class="form-control" />
@@ -114,10 +145,11 @@ const JobEventForm = (props:JobEventProps) => {
                                 <PTextArea label="Notes" name="notes" id="notes" className="form-control" />
                             </div>
                             <div className="d-flex justify-content-end btn-row">
-                                    <Button className="btn btn-secondary">Cancel</Button>
-                                    <Button color="success" className="btn btn-primary">Save</Button>
+                                    <Button className="btn btn-secondary" type="button" onClick={props.toggle}>Cancel</Button>
+                                    <Button color="success" type="submit" className="btn btn-primary">Save</Button>
                             </div>
                         </div>
+                        </Form>
                     </Formik>
                 </ModalBody>
             </Modal>
