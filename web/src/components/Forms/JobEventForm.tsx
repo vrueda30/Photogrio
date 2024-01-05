@@ -20,6 +20,7 @@ export interface JobEventProps {
 }
 
 interface JobTypes{
+    ID: string | number | readonly string[] | undefined;
     id: number,
     name: string,
     description: string,
