@@ -18,7 +18,7 @@ const buildrow = (row:object, headers:Column[] | undefined | null,rowIndex:numbe
                 if (value.formatter){
                     return value.formatter(row[value.accessor],row.ID)
                 }else {
-                    return <td className="table-cell" id={index}>{row[value.accessor]}</td>
+                    return <td className="table-cell" id={row.ID}>{row[value.accessor]}</td>
                 }
             })}
         </tr>

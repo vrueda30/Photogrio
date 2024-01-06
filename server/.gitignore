@@ -5,6 +5,7 @@
 *.dylib
 
 *.out
+*.crt
 
 go.work
 

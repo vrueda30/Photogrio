@@ -24,7 +24,6 @@ export const DayCard = (props?: Props) => {
     }
     useEffect(() => {
         getIndexAsString(props?.imageIndex).then((r) => {
-            console.log(`image index received: ${props?.imageIndex}`)
             setImgIndex(r)
         })
     }, [props?.imageIndex]);

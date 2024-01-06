@@ -61,7 +61,6 @@ const JobEventForm = (props:JobEventProps) => {
                 },
                 withCredentials: true
             })
-            console.log(res.data)
             setJobTypes(res.data)
             const conRes = await GetContacts(token)
             setContacts(conRes)
@@ -146,8 +145,8 @@ const JobEventForm = (props:JobEventProps) => {
                                 <PTextArea label="Notes" name="notes" id="notes" className="form-control" />
                             </div>
                             <div className="d-flex justify-content-end btn-row">
-                                    <Button className="btn btn-secondary" type="button" onClick={props.toggle}>Cancel</Button>
-                                    <Button color="success" type="submit" className="btn btn-primary">Save</Button>
+                                    <Button className="btn btn-secondary btn-jb-sec" type="button" onClick={props.toggle}>Cancel</Button>
+                                    <Button color="success" type="submit" className="btn btn-primary btn-jb-pri">Save</Button>
                             </div>
                         </div>
                         </Form>

@@ -9,6 +9,7 @@ import (
 	"job.api/models"
 	"log"
 	"net/http"
+	"time"
 )
 
 const apiPath = "jobs"
@@ -18,10 +19,54 @@ func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	jobService.GET(fmt.Sprintf("%s", "get_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), getJobs)
 	jobService.GET(fmt.Sprintf("%s", "setup_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), setupJobs)
 	jobService.GET(fmt.Sprintf("%s", "get_job_types"), middleware.CheckJWT(), middleware.ReadCookie(), getJobTypes)
-	jobService.POST(fmt.Sprintf("%s", "create_job"), middleware.CheckJWT(), middleware.ReadCookie(), create_job)
+	jobService.POST(fmt.Sprintf("%s", "createJob"), middleware.CheckJWT(), middleware.ReadCookie(), createJob)
+	jobService.GET(fmt.Sprintf("%s", "get_calendar_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), getCalendarJobs)
 }
 
-func create_job(ctx *gin.Context) {
+func getCalendarJobs(ctx *gin.Context) {
+	accountId := middleware.Cookie.AccountId
+	startString := ctx.Query("start")
+	start, err := time.Parse(time.RFC3339, startString)
+	if err != nil {
+		common.HandlePanicError(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error retrieving jobs"})
+	}
+	endString := ctx.Query("end")
+	end, err := time.Parse(time.RFC3339, endString)
+	if err != nil {
+		common.HandlePanicError(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error retrieving jobs"})
+	}
+
+	jobs, err := GetJobCalendarView(start, end, accountId)
+	if err != nil {
+		common.HandlePanicError(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error retrieving jobs"})
+		return
+	}
+
+	calendarViewJobs := convertToCalendarView(jobs)
+
+	ctx.JSON(http.StatusOK, calendarViewJobs)
+	return
+}
+
+func convertToCalendarView(jobs *[]models.Job) *[]models.JobCalendarView {
+	jobCalendarView := &[]models.JobCalendarView{}
+	for _, j := range *jobs {
+		*jobCalendarView = append(*jobCalendarView, models.JobCalendarView{
+			Id:     int(j.ID),
+			Start:  j.JobDateStart.Time,
+			End:    j.JobDateEnd.Time,
+			Title:  j.Name,
+			AllDay: j.AllDay,
+		})
+	}
+
+	return jobCalendarView
+}
+
+func createJob(ctx *gin.Context) {
 	var newJob *models.JobCreateDTO
 	err := ctx.ShouldBindJSON(&newJob)
 	if err != nil {

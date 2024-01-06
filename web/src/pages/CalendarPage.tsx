@@ -1,8 +1,13 @@
 
 import {Calendar, momentLocalizer, SlotInfo} from "react-big-calendar";
 import moment from 'moment'
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import JobEventForm from "../components/Forms/JobEventForm.tsx";
+import * as pdate from '../utils/date-utils.ts'
+import {useAuth0} from "@auth0/auth0-react";
+import axios from "axios";
+import {JOB_API_BASE_URL} from "./api-routes.tsx";
+import {CalendarEvent} from "../interfaces/jobs.ts";
 
 const localizer = momentLocalizer(moment)
 
@@ -26,6 +31,9 @@ const CalendarPage = () => {
    // const [events,setEvents] = useState(props.dataSource)
     const [showEventForm, setShowEventForm] = useState(false)
     const [event, setEvent] = useState<ScheduleEvent>(defaultEvent)
+    const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([])
+    const {getAccessTokenSilently} = useAuth0()
+
     const handleSelectSlot = useCallback((s:SlotInfo) => {
         setEvent({ID:0, start:s.start, end: s.end})
         setShowEventForm(!showEventForm)
@@ -34,12 +42,40 @@ const CalendarPage = () => {
         setShowEventForm(!showEventForm)
     }
 
+    const getEvents = async(start:string, end:string) => {
+        const token = await getAccessTokenSilently()
+        const res = await axios.get(`${JOB_API_BASE_URL}get_calendar_jobs?start=${start}&end=${end}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            },
+            withCredentials:true
+        })
+
+        return await res.data
+    }
+
+    useEffect(() => {
+        const start = pdate.firstVisible(new Date())
+        const end = pdate.lastVisible(new Date())
+        const dateRange = {
+            start: start.toISOString(),
+            end: end.toISOString(),
+        }
+        getEvents(start.toISOString(), end.toISOString()).then(async (res) => {
+            console.log(`retrieved events: ${JSON.stringify(res)}`)
+            setCalendarEvents(res)
+        })
+        console.log(JSON.stringify(dateRange))
+
+    }, []);
+
     return(
         <div>
             <div className="calendar">
                 <Calendar className="calendar"
                       localizer={localizer}
                       onSelectSlot={handleSelectSlot}
+                      events={calendarEvents}
                       selectable />
             </div>
             <JobEventForm modal={showEventForm} startDateTime={event.start} endDateTime={event.end} toggle={toggle}/>

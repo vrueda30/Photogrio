@@ -56,3 +56,11 @@ type JobCreateDTO struct {
 	JobType      int       `json:"jobType"`
 	Client       int       `json:"client"`
 }
+
+type JobCalendarView struct {
+	Id     int       `json:"id"`
+	Title  string    `json:"title"`
+	AllDay bool      `json:"allDay"`
+	Start  time.Time `json:"start"`
+	End    time.Time `json:"end"`
+}

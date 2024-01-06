@@ -142,7 +142,6 @@ export const DailyTaskWidget = () => {
             if (res == null){
                 setForecasts([])
             }else {
-                console.log(JSON.stringify(res))
                 setForecasts(res)
             }
         })

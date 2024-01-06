@@ -4,6 +4,7 @@ import (
 	"job.api/data"
 	"job.api/models"
 	"log"
+	"time"
 )
 
 func SeedJobTypesForAccount(seedJobs []*models.JobType) error {
@@ -11,6 +12,17 @@ func SeedJobTypesForAccount(seedJobs []*models.JobType) error {
 		return res.Error
 	}
 	return nil
+}
+
+func GetJobCalendarView(start time.Time, end time.Time, accountId int) (*[]models.Job, error) {
+	var jobs = &[]models.Job{}
+	res := data.DB.Where("job_date_start >= ? AND job_date_end <= ? AND account_id = ?", start, end, accountId).
+		Find(jobs)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return jobs, nil
 }
 
 func GetJobTypes(accountId int) ([]models.JobType, error) {

@@ -26,6 +26,7 @@
     "@syncfusion/ej2-react-calendars": "^23.2.7",
     "axios": "^1.6.0",
     "bootstrap": "^5.3.2",
+    "date-arithmetic": "^4.1.0",
     "env-cmd": "^10.1.0",
     "formik": "^2.4.5",
     "lexical": "^0.12.5",

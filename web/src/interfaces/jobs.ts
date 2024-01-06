@@ -9,3 +9,11 @@ export interface JobsCreateDTO{
     jobType: number,
     client: number
 }
+
+export interface CalendarEvent{
+    id: number,
+    title: string,
+    start: Date,
+    end: Date,
+    allDay:boolean
+}

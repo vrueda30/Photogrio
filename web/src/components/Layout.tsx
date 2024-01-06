@@ -24,7 +24,6 @@ export const Layout = () => {
             },
             withCredentials: true
         })
-        console.log(`setup status: ${res.data.status}`)
         return res.data.status
     }
 
@@ -40,7 +39,6 @@ export const Layout = () => {
     }
 
     const setupAccount = useCallback(async(token:string) => {
-        console.log("In setup account 2")
         let setupStatus: string
         const res = await axios.get(GET_ACCOUNT_SETUP_STATUS_URL,{
             headers: {
@@ -49,15 +47,12 @@ export const Layout = () => {
             withCredentials: true
         })
         const data = await res.data.setupStep
-        console.log(data)
         setSetupStep(data)
         switch (setupStep) {
             case 1:
                 setupStatus = await  seedJobTypes(token)
-                console.log(setupStatus)
                 if (setupStatus === "complete"){
-                    const stat = await updateSetupStatus(token)
-                    console.log(stat)
+                   await updateSetupStatus(token)
                 }
 
         }
@@ -65,7 +60,6 @@ export const Layout = () => {
 
     useEffect(() => {
         getAccessTokenSilently().then((t) => {
-            console.log("In use effect on layout")
             axios.get(get_cookies_url, {
                 headers: {
                     Authorization: "Bearer " + t

@@ -1,7 +1,7 @@
 services:
   photogrio-server:
     container_name: photogrio-server
-    build: ./account.api
+    build: photogrio.server
     ports:
       - 5001:5001
       - 40000:40000
