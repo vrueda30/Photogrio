@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"account.api/common"
-	"account.api/security"
-	"account.api/services/models"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
+	"photogrio-server/common"
+	"photogrio-server/security"
+	"photogrio-server/services/models"
 )
 
 var Account *models.UserSessionInfo

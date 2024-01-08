@@ -1,13 +1,13 @@
 package services
 
 import (
-	"account.api/auth0client"
-	"account.api/middleware"
-	"account.api/services/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"photogrio-server/auth0client"
+	"photogrio-server/middleware"
+	"photogrio-server/services/models"
 )
 
 const accountPath = "accounts"

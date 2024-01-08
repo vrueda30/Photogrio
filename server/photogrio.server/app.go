@@ -1,9 +1,6 @@
 package main
 
 import (
-	"account.api/database"
-	"account.api/services"
-	"account.api/services/models"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -13,6 +10,9 @@ import (
 	"io"
 	"log"
 	"os"
+	"photogrio-server/database"
+	"photogrio-server/services"
+	"photogrio-server/services/models"
 	"time"
 )
 
@@ -59,6 +59,7 @@ func main() {
 	}))
 	services.SetupRoutes(router, basePath)
 	services.SetupUserRoutes(router, basePath)
+	services.SetupWeatherRoutes(router, basePath)
 	dsn := database.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

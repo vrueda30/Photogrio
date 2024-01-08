@@ -1,16 +1,24 @@
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {
-    faHome,
-    faAddressBook,
     faEnvelope,
     faPhone,
     faLocationDot,
     faPencil,
-    faCalendar, faCamera, faFile
-} from "@fortawesome/free-solid-svg-icons";
+    faCamera,
+    faGripLinesVertical,
+} from "@fortawesome/free-solid-svg-icons" //from "@fortawesome/free-solid-svg-icons";
+
+import {
+    faHouse,
+    faAddressBook,
+    faCalendar,
+    faList,
+    faFile,
+    faSpinner,
+    faGear,
+} from "@fortawesome/pro-light-svg-icons"
 
 function initFontAwesome() {
-    library.add(faHome)
     library.add(faAddressBook)
     library.add(faEnvelope)
     library.add(faPhone)
@@ -19,6 +27,11 @@ function initFontAwesome() {
     library.add(faCalendar)
     library.add(faCamera)
     library.add(faFile)
+    library.add(faGripLinesVertical)
+    library.add(faHouse)
+    library.add(faList)
+    library.add(faSpinner)
+    library.add(faGear)
 }
 
 export default initFontAwesome;

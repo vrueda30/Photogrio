@@ -19,73 +19,99 @@ export const NavBar = () => {
                   <Nav className="mr-auto" navbar>
                       <NavItem>
                           <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/"
+                                  className="router-link-exact-active"
+                                  exact
+                              >
                               <Row>
-                                  <FontAwesomeIcon icon="home" className="mr-3 menu-icon" />
+                                  <FontAwesomeIcon icon={["fal","house"]} className="mr-3 menu-icon" />
                               </Row>
                               <Row>
-                          <NavLink
-                              tag={RouterNavLink}
-                              to="/"
-                              className="router-link-exact-active"
-                              exact
-                              >Dashboard</NavLink>
+                                    Dashboard
                               </Row>
+                              </NavLink>
                           </Container>
                       </NavItem>
                       <NavItem>
                           <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/contacts"
+                                  exact
+                                  activeClassName="router-link-exact-active">
                               <Row>
-                                  <FontAwesomeIcon icon="address-book" className="mr-3 menu-icon" />
+                                  <FontAwesomeIcon icon={["fal","address-book"]} className="mr-3 menu-icon" />
                               </Row>
                               <Row>
-                                  <NavLink
-                                      tag={RouterNavLink}
-                                      to="/contacts"
-                                      exact
-                                      activeClassName="router-link-exact-active">Contacts</NavLink>
+                                    Contacts
                               </Row>
+                              </NavLink>
                           </Container>
                       </NavItem>
                       <NavItem>
                           <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/calendar"
+                                  exact
+                                  activeClassName="router-link-exact-active">
                               <Row>
-                                  <FontAwesomeIcon icon="calendar" className="mr-3 menu-icon" />
+                                  <FontAwesomeIcon icon={["fal","calendar"]} className="mr-3 menu-icon" />
                               </Row>
                               <Row>
-                                  <NavLink
-                                      tag={RouterNavLink}
-                                      to="/calendar"
-                                      exact
-                                      activeClassName="router-link-exact-active">Calendar</NavLink>
+                                    Calendar
                               </Row>
+                              </NavLink>
                           </Container>
                       </NavItem>
                       <NavItem>
                           <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/todos"
+                                  exact
+                                  activeClassName="router-link-exact-active">
                               <Row>
-                                  <FontAwesomeIcon icon="camera" className="mr-3 menu-icon" />
+                                  <FontAwesomeIcon icon={["fal","list"]} className="mr-3 menu-icon" />
                               </Row>
                               <Row>
-                                  <NavLink
-                                      tag={RouterNavLink}
-                                      to="/jobs"
-                                      exact
-                                      activeClassName="router-link-exact-active">Jobs</NavLink>
+                                    To-Dos
                               </Row>
+                              </NavLink>
                           </Container>
                       </NavItem>
                       <NavItem>
                           <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/documents"
+                                  exact
+                                  activeClassName="router-link-exact-active">
                               <Row>
-                                  <FontAwesomeIcon icon="file" className="mr-3 menu-icon" />
+                                  <FontAwesomeIcon icon={["fal","file"]} className="mr-3 menu-icon" />
                               </Row>
                               <Row>
-                                  <NavLink
-                                      tag={RouterNavLink}
-                                      to="/documents"
-                                      exact
-                                      activeClassName="router-link-exact-active">Documents</NavLink>
+                                    Documents
                               </Row>
+                              </NavLink>
+                          </Container>
+                      </NavItem>
+                      <NavItem>
+                          <Container>
+                              <NavLink
+                                  tag={RouterNavLink}
+                                  to="/settings"
+                                  exact
+                                  activeClassName="router-link-exact-active">
+                                <Row>
+                                  <FontAwesomeIcon icon={["fal","gear"]} className="mr-3 menu-icon" />
+                                </Row>
+                                <Row>
+                                    Settings
+                                </Row>
+                              </NavLink>
                           </Container>
                       </NavItem>
                   </Nav>

@@ -20,7 +20,11 @@ export const lastVisible = (date:Date) => {
     return lastDate
 }
 
-export const localToUTC = (date:Date) => {
-    return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
-        date.getUTCMinutes(), date.getUTCSeconds())
+export const timeToString = (hour: number, minutes: number) => {
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const actualHour = hour > 12 ? hour - 12 : hour;
+    const hourPadded = actualHour.toString().padStart(2, "0")
+    const minutesPadded = minutes.toString().padEnd(2, "0")
+    const timeAsString = `${hourPadded}:${minutesPadded} ${ampm}`
+    return timeAsString === "00:00 AM" ? "12:00 AM" : timeAsString
 }

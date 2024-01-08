@@ -18,6 +18,7 @@ import {Contacts} from "./pages/Contact/Contacts.tsx";
 import {EditContact} from "./pages/Contact/EditContact.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import {registerLicense} from '@syncfusion/ej2-base'
+import ToDos from "./pages/ToDos.tsx";
 
 
 initFontAwesome();
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "/calendar",
                 element: <CalendarPage />
+            },
+            {
+                path: "/todos",
+                element: <ToDos />
             }
         ]
     },

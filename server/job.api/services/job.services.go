@@ -21,6 +21,21 @@ func SetupRoutes(router *gin.Engine, apiBasePath string) {
 	jobService.GET(fmt.Sprintf("%s", "get_job_types"), middleware.CheckJWT(), middleware.ReadCookie(), getJobTypes)
 	jobService.POST(fmt.Sprintf("%s", "createJob"), middleware.CheckJWT(), middleware.ReadCookie(), createJob)
 	jobService.GET(fmt.Sprintf("%s", "get_calendar_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), getCalendarJobs)
+	jobService.GET(fmt.Sprintf("%s", "get_jobs_by_day"), middleware.CheckJWT(), middleware.ReadCookie(), getJobsByDay)
+}
+
+func getJobsByDay(ctx *gin.Context) {
+	dateString := ctx.Query("date")
+	date, err := time.Parse(time.RFC3339, dateString)
+	if err != nil {
+		common.HandlePanicError(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error getting jobs for the day"})
+		return
+	}
+	jobs, err := GetJobsForDay(date, middleware.Cookie.AccountId)
+	calendarViewJobs := convertToCalendarView(jobs)
+	ctx.JSON(http.StatusOK, calendarViewJobs)
+	return
 }
 
 func getCalendarJobs(ctx *gin.Context) {

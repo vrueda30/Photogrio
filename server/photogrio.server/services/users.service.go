@@ -1,15 +1,15 @@
 package services
 
 import (
-	"account.api/middleware"
-	"account.api/security"
-	"account.api/services/models"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
+	"photogrio-server/middleware"
+	"photogrio-server/security"
+	"photogrio-server/services/models"
 )
 
 const userPath = "users"

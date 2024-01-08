@@ -1,13 +1,13 @@
 package services
 
 import (
-	"account.api/database"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"photogrio-server/database"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
 func init() {
 	dsn := database.Dsn()
@@ -15,5 +15,5 @@ func init() {
 	if err != nil {
 		log.Println(err)
 	}
-	db = gdb
+	DB = gdb
 }

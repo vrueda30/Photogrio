@@ -1,7 +1,7 @@
 
-import {Calendar, momentLocalizer, SlotInfo} from "react-big-calendar";
+import {Calendar, momentLocalizer, SlotInfo, Views} from "react-big-calendar";
 import moment from 'moment'
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import JobEventForm from "../components/Forms/JobEventForm.tsx";
 import * as pdate from '../utils/date-utils.ts'
 import {useAuth0} from "@auth0/auth0-react";
@@ -33,6 +33,9 @@ const CalendarPage = () => {
     const [event, setEvent] = useState<ScheduleEvent>(defaultEvent)
     const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([])
     const {getAccessTokenSilently} = useAuth0()
+    const {views} = useMemo(() => ({
+        views: Object.keys(Views).map((k) => Views[k]),
+    }),[])
 
     const handleSelectSlot = useCallback((s:SlotInfo) => {
         setEvent({ID:0, start:s.start, end: s.end})
@@ -55,17 +58,16 @@ const CalendarPage = () => {
     }
 
     useEffect(() => {
-        const start = pdate.firstVisible(new Date())
-        const end = pdate.lastVisible(new Date())
-        const dateRange = {
-            start: start.toISOString(),
-            end: end.toISOString(),
-        }
-        getEvents(start.toISOString(), end.toISOString()).then(async (res) => {
-            console.log(`retrieved events: ${JSON.stringify(res)}`)
+        const startDate = pdate.firstVisible(new Date())
+        const endDate = pdate.lastVisible(new Date())
+        getEvents(startDate.toISOString(), endDate.toISOString()).then(async (res) => {
+            res.forEach( (e:CalendarEvent) => {
+                e.start = new Date(e.start.toLocaleString())
+                e.end = new Date(e.end.toLocaleString())
+            })
+
             setCalendarEvents(res)
         })
-        console.log(JSON.stringify(dateRange))
 
     }, []);
 
@@ -75,7 +77,14 @@ const CalendarPage = () => {
                 <Calendar className="calendar"
                       localizer={localizer}
                       onSelectSlot={handleSelectSlot}
+                      onSelectEvent={(e)=>{console.log(e.id)}}
+                      onNavigate={(d,v,a)=>{
+                          console.log(d)
+                          console.log(v)
+                          console.log(a)
+                      }}
                       events={calendarEvents}
+                      views={views}
                       selectable />
             </div>
             <JobEventForm modal={showEventForm} startDateTime={event.start} endDateTime={event.end} toggle={toggle}/>

@@ -1,10 +1,11 @@
 import {Row} from "reactstrap";
 import DayCard from "./DayCard.tsx";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import './day-card-styles.css'
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios"
-import {SCHEDULING_API_BASE_URL} from "../../pages/api-routes.tsx";
+import {ACCOUNT_API_BASE_URL, SCHEDULING_API_BASE_URL, WEATHER_API_BASE_URL} from "../../pages/api-routes.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const getMonthAsString = (m:number): string => {
     let val = "";
@@ -56,7 +57,8 @@ const getMonthAsString = (m:number): string => {
 export interface DDate{
     day: number | string,
     month: string,
-    year: string
+    year: string,
+    monthNumber: number
 }
 
 export interface Coordinates{
@@ -110,14 +112,16 @@ export interface DayNight {
 }
 export const DailyTaskWidget = () => {
     const [pos, savePos] = useState<Coordinates>({latitude: 0, longitude: 0})
+    const [loading, setLoading] = useState(true)
     const [foreCasts, setForecasts] = useState<Forecast[]>([])
     const currentDate = new Date();
     const {getAccessTokenSilently} = useAuth0()
+    const [dayTaskList, setDayTaskList] = useState<DDate[]>([])
 
     const getWeatherForecast = async():Promise<Forecast[]> => {
         const token = await getAccessTokenSilently()
         await getLocation()
-        const result = await axios.get(`${SCHEDULING_API_BASE_URL}get_five_day_forecast`, {
+        const result = await axios.get(`${WEATHER_API_BASE_URL}get_five_day_forecast`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -138,32 +142,56 @@ export const DailyTaskWidget = () => {
 
     const fiveDayWeek:DDate[] = useMemo(() => {
         const dlist:DDate[] = []
-        getWeatherForecast().then((res) => {
-            if (res == null){
-                setForecasts([])
-            }else {
-                setForecasts(res)
-            }
-        })
-        dlist.push({day: currentDate.getDate(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
-        for (let i = 0; i < 4; i++){
-            currentDate.setDate(currentDate.getDate() + 1)
-            dlist.push({day: currentDate.getDate(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
+        const loadWeather = async() => {
+            setLoading(true)
+            getWeatherForecast().then((res) => {
+                if (res == null){
+                    setForecasts([])
+                }else {
+                    setForecasts(res)
+                }
+            })
+            //setLoading(false)
         }
+        loadWeather().then(async ()=>{
+            dlist.push({day: currentDate.getDate(),monthNumber:currentDate.getMonth(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
+            for (let i = 0; i < 4; i++){
+                currentDate.setDate(currentDate.getDate() + 1)
+                dlist.push({day: currentDate.getDate(), monthNumber:currentDate.getMonth(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
+            }
+        }).finally(()=>{
+            setLoading(false)
+        })
+
         return dlist
     },[])
 
 
-    const listDays = fiveDayWeek.map((day,index) =>
-        <DayCard month={day.month} day={day.day} year={day.year} imageIndex={foreCasts.length === 0 ? 1 : foreCasts[index].Day.Icon}/>
-    );
 
+    const DisplayDay = () => {
+        return(
+            <Row className="day-widget justify-content-center mt-4">
+                {fiveDayWeek.map((day,index) => {
+                    return(
+                        <DayCard key={day.day} month={day.month} monthNumber={day.monthNumber} day={day.day} year={day.year}
+                                 imageIndex={foreCasts[index].Day.Icon}
+                                 temp={foreCasts[index].Temperature.Maximum.Value}/>
+                    )})}
+            </Row>
+        )
+    }
+
+    const DisplayLoading = () => {
+        return(
+            <Row className="day-widget justify-content-center mt-4">
+                <FontAwesomeIcon icon={["fal","spinner"]} spin size="2xl" className="task-widget-spinner" />
+            </Row>
+        )
+    }
 
     return(
         <>
-            <Row className="task-widget justify-content-center mt-4">
-                {listDays}
-            </Row>
+            {loading || foreCasts.length < 5 ? <DisplayLoading /> : <DisplayDay />}
         </>
     )
 }

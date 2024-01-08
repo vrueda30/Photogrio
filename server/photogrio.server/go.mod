@@ -1,4 +1,4 @@
-module account.api
+module photogrio-server
 
 go 1.21
 

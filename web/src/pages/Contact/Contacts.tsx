@@ -8,6 +8,7 @@ import {Cookies} from "react-cookie";
 import {Form, Formik} from "formik";
 import PTextInput from "../../components/Common/PTextInput.tsx";
 import * as Yup from 'yup'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface userFormProps {
     isOpen: boolean,
@@ -170,7 +171,7 @@ export const Contacts = () => {
 
         </>
     )} else {
-        return (<>Loading...</>)
+        return (<><FontAwesomeIcon icon={["fal","spinner"]} spin size="2xl" /></>)
      }
     }
 

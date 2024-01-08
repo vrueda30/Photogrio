@@ -662,7 +662,7 @@ button.rbc-input::-moz-focus-inner {
 body {
   padding: 0;
   margin: 1rem;
-  background-color: white;
+  background-color: #edf2f7;
   font-weight: 400;
   line-height: 1.563;
   color: #2d3748;
@@ -782,6 +782,7 @@ textarea:focus {
   margin-top: 25px;
   width: 100%;
   box-shadow: rgba(7, 7, 7, 0.125) 2px 2px 1px;
+  background-color: white;
 }
 
 .p-table-col-header {

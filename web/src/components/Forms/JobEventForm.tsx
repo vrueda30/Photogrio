@@ -28,7 +28,7 @@ interface JobTypes{
 }
 
 const CreateJob = async (job:JobsCreateDTO, token:string):Promise<string | null> => {
-    const res = await axios.post(`${JOB_API_BASE_URL}create_job`,job, {
+    const res = await axios.post(`${JOB_API_BASE_URL}createJob`,job, {
         headers: {
             Authorization: `Bearer ${token}`
         },
@@ -86,7 +86,6 @@ const JobEventForm = (props:JobEventProps) => {
                         notes: '',
                         allDay: false}}
                             onSubmit={async (values,{setSubmitting}) => {
-                                console.log(JSON.stringify(values))
                                 setSubmitting(true)
                                 const newJob:JobsCreateDTO = {
                                     id: 0,
@@ -133,7 +132,7 @@ const JobEventForm = (props:JobEventProps) => {
                                 </PSelect>
                             </div>
                             <div className="job-form-field">
-                                <PDateRangePicker label= "Start" name="startDateTime" blur={()=>{alert('value changed')}}  value={props.startDateTime} />
+                                <PDateRangePicker label= "Start" name="startDateTime"  value={props.startDateTime} />
                             </div>
                             <div className="job-form-field">
                                 <PDateRangePicker  label="End" name="endDateTime" min={props.startDateTime} value={props.endDateTime} class="form-control" />

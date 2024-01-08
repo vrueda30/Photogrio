@@ -3,4 +3,17 @@
   height: 45px;
 }
 
+.to-do-widget {
+  height: 300px;
+  border: solid thin #cbd5e0;
+  box-shadow: rgba(160, 174, 192, 0.5) 2px 2px 2px;
+  border-radius: 5px;
+  max-width: 95%;
+  background-color: white;
+}
+
+.to-do-widget-header {
+  background-color: #bee3f8;
+}
+
 /*# sourceMappingURL=components.css.map */

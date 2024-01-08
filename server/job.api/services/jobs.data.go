@@ -25,6 +25,20 @@ func GetJobCalendarView(start time.Time, end time.Time, accountId int) (*[]model
 	return jobs, nil
 }
 
+func GetJobsForDay(date time.Time, accountId int) (*[]models.Job, error) {
+	endDate := date.Add(time.Hour * 24)
+	log.Printf("End date: %v AccountId: %d", endDate, accountId)
+	var jobs = &[]models.Job{}
+	res := data.DB.Where("job_date_start >= ? AND job_date_start <= ? AND account_id = ?", date, endDate, accountId).
+		Find(jobs)
+	if res.Error != nil {
+		log.Printf(res.Error.Error())
+		return nil, res.Error
+	}
+	log.Printf("Found jobs: %v for date:%v", jobs, date)
+	return jobs, nil
+}
+
 func GetJobTypes(accountId int) ([]models.JobType, error) {
 	var jobTypes = &[]models.JobType{}
 	res := data.DB.Where("account_id=?", accountId).Find(jobTypes)

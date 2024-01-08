@@ -1,7 +1,7 @@
 package models
 
 import (
-	db "account.api/database"
+	db "photogrio-server/database"
 )
 
 type Membership struct {
