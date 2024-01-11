@@ -4,8 +4,6 @@ import {useNavigate} from "react-router-dom";
 const AuthProviderWithCallback = ({children, ...props}) => {
     const navigate = useNavigate();
     const onRedirectCallback = (appState) => {
-        const t = typeof(appState)
-        console.log(`type of appState: ${t}`)
         navigate((appState && appState.returnTo) || window.location.pathname)
         //navigate("/")
     }

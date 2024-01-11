@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"photogrio-server/common"
 	"photogrio-server/middleware"
 	"photogrio-server/services/models"
@@ -21,7 +22,7 @@ func SetupWeatherRoutes(router *gin.Engine, apiBasePath string) {
 }
 
 func getFiveDayForecast(context *gin.Context) {
-	var queryString = "https://dataservice.accuweather.com/forecasts/v1/daily/5day/23108_PC?apikey=oAuXGwFHE4Na0mnGFMUqmvRXBroYTpKD"
+	var queryString = fmt.Sprintf("https://dataservice.accuweather.com/forecasts/v1/daily/5day/23108_PC?apikey=%s", os.Getenv("W_API_KEY"))
 	log.Printf("Start get five day forecase: %s", time.Now())
 	resp, err := http.Get(queryString)
 	if err != nil {

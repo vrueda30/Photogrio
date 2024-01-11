@@ -32,13 +32,13 @@ export const ContactList = ({data}:props) => {
     const dataColumns = [
         {label: "Name", accessor: "name", formatter: (value:never,key?:never) => {
                 return(
-                    <div className="justify-content-center table-cell">
+                    <td className="justify-content-center table-cell">
                     <Nav>
                         <NavItem>
                             <NavLink tag={RouterNavLink} to={`/contact/${key}`} className="router-link-exact-active contact-link">{value}</NavLink>
                         </NavItem>
                     </Nav>
-                    </div>
+                    </td>
                 )
             }},
         {label: "Email", accessor: "email"},
@@ -47,9 +47,9 @@ export const ContactList = ({data}:props) => {
     ]
 
     return(
-        <>
-            <Table dkey="ID" data={data} columns={dataColumns} cssColClass={"flex-fill"} noDataMsg="No contacts to show"/>
-        </>
+        <div className="m-5">
+            <Table dkey="ID" data={data} columns={dataColumns} cssColClass={"flex-fill"} noDataMsg="Create your first contact"/>
+        </div>
     )
 }
 

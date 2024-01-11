@@ -26,6 +26,7 @@ services:
       - AUTH0_CLIENT_SECRET=${AUTH0_ACCOUNT_SECRET}
       - AUTH0_CONNECTION=Photogrio
       - SESSION_KEY=${SESSION_KEY}
+      - W_API_KEY=${W_API_KEY}
     command: /dlv --headless --listen=:40000 --api-version=2 exec /photogrio/server
     depends_on:
       - db
