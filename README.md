@@ -1,3 +1,3 @@
 # Photogrio
 
-My project that started of on learning React and Go
+My hobby project for learning React and Go
