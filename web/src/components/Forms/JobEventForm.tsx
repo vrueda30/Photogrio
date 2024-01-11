@@ -10,13 +10,14 @@ import axios from "axios";
 import {ContactListView} from "../Contact/interfaces.ts";
 import './photogrio-forms.css'
 import PTextArea from "../Common/PTextArea.tsx";
-import {JobsCreateDTO} from "../../interfaces/jobs.ts";
+import {CalendarEvent, JobsCreateDTO} from "../../interfaces/jobs.ts";
 
 export interface JobEventProps {
     startDateTime: Date,
     endDateTime: Date
     modal: boolean
     toggle: () => void
+    handleEventAdd: (jevent:CalendarEvent) => void
 }
 
 interface JobTypes{
@@ -27,14 +28,22 @@ interface JobTypes{
     accountId: number
 }
 
-const CreateJob = async (job:JobsCreateDTO, token:string):Promise<string | null> => {
+const CreateJob = async (job:JobsCreateDTO, token:string):Promise<CalendarEvent | string | null> => {
     const res = await axios.post(`${JOB_API_BASE_URL}createJob`,job, {
         headers: {
             Authorization: `Bearer ${token}`
         },
         withCredentials: true
     })
-    return await res.data.status
+
+    const ce:CalendarEvent = {
+        id: res.data.ID,
+        start: res.data.jobDateStart.Time,
+        end: res.data.jobDateEnd.Time,
+        title: res.data.name,
+        allDay: res.data.allDay,
+    }
+    return ce
 }
 
 const JobEventForm = (props:JobEventProps) => {
@@ -99,12 +108,12 @@ const JobEventForm = (props:JobEventProps) => {
                                     client: Number(values.client)
                                 }
                                 const token = await getAccessTokenSilently()
-                                console.log(JSON.stringify(values))
-                                const res = await CreateJob(newJob, token)
-                                if (res !== "success") {
-                                    console.log("Error creating job")
-                                } else {
+                                try {
+                                    const res = await CreateJob(newJob, token)
+                                    props.handleEventAdd(res)
                                     props.toggle()
+                                } catch (e) {
+                                    console.log(e)
                                 }
                                 setSubmitting(false)
                             }}>
@@ -121,8 +130,8 @@ const JobEventForm = (props:JobEventProps) => {
                             </div>
                             <div className="job-form-field">
                                 <PSelect label="Client" name="client" className="form-control">
-                                    <option value={-1} className="form-control">Select Client</option>
-                                    {contacts.map((ct) => <option value={ct.id}>{ct.name}</option>)}
+                                    <option value={-1} key={-1} className="form-control">Select Client</option>
+                                    {contacts.map((ct) => <option value={ct.id} key={ct.id}>{ct.name}</option>)}
                                 </PSelect>
                             </div>
                             <div className="job-form-field">

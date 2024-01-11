@@ -68,12 +68,14 @@ export const DayCard = (props: Props) => {
         })
     }, []);
     return(
-            <Col className="day-card m-1">
+            <Col className="day-card col-12 col-xl-2 m-1">
                 <Row className="justify-content-center align-items-center daily-card-header">
                     {props?.month} {props?.day}, {props?.year}  {props?.temp}&#8457; <img alt="weather icon" className="weather-icon" src={`https://developer.accuweather.com/sites/default/files/${imgIndex}-s.png`} />
                 </Row>
-                <Row className="day-card-body align-items-center justify-content-center">
-                    <DayCardItem tasks={tasks} />
+                <Row className="day-card-body d-flex pb-2">
+                    <Col className="col-12 p-0 m-0">
+                        <DayCardItem tasks={tasks} />
+                    </Col>
                 </Row>
             </Col>
     );

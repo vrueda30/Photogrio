@@ -7,20 +7,26 @@ import ToDoWidget from "../components/ToDo/ToDoWidget.tsx";
 
 export const Dashboard = () => {
     return(
-        <>
-            <div>
-                <DailyTaskWidget />
-            </div>
-            <Row className="mt-5">
-                <Col className="justify-content-center">
-                    <Row className="d-flex justify-content-center align-middle">
-                        <ToDoWidget />
+        <div className="dashboard d-inline-block">
+            <Row>
+                <Col className="col-12">
+                   <DailyTaskWidget />
+                </Col>
+            </Row>
+            <Row className="mt-5 m-0">
+                <Col className="justify-content-center col-12 col-md-6">
+                    <Row className="d-flex w-100 justify-content-center align-middle">
+                        <Col className="col-12">
+                           <ToDoWidget />
+                        </Col>
                     </Row>
-                    <Row>
-                        <MailWidget />
+                    <Row className="d-flex">
+                        <Col className="col-12">
+                           <MailWidget />
+                        </Col>
                     </Row>
                 </Col>
-                <Col>
+                <Col className="col-12 col-md-6">
                     <Row>
                         <LeadsWidget />
                     </Row>
@@ -29,7 +35,7 @@ export const Dashboard = () => {
                     </Row>
                 </Col>
             </Row>
-        </>
+        </div>
     )
 }
 

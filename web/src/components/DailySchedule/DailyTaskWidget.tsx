@@ -1,4 +1,4 @@
-import {Row} from "reactstrap";
+import {Col, Container, Row} from "reactstrap";
 import DayCard from "./DayCard.tsx";
 import {useEffect, useMemo, useState} from "react";
 import './day-card-styles.css'
@@ -6,6 +6,8 @@ import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios"
 import {ACCOUNT_API_BASE_URL, SCHEDULING_API_BASE_URL, WEATHER_API_BASE_URL} from "../../pages/api-routes.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+const DAY_BREAK_POINT = 920
 
 const getMonthAsString = (m:number): string => {
     let val = "";
@@ -116,7 +118,6 @@ export const DailyTaskWidget = () => {
     const [foreCasts, setForecasts] = useState<Forecast[]>([])
     const currentDate = new Date();
     const {getAccessTokenSilently} = useAuth0()
-    const [dayTaskList, setDayTaskList] = useState<DDate[]>([])
 
     const getWeatherForecast = async():Promise<Forecast[]> => {
         const token = await getAccessTokenSilently()
@@ -139,45 +140,67 @@ export const DailyTaskWidget = () => {
         savePos({latitude: position.coords.latitude, longitude: position.coords.longitude})
     }
 
-
-    const fiveDayWeek:DDate[] = useMemo(() => {
-        const dlist:DDate[] = []
-        const loadWeather = async() => {
-            setLoading(true)
-            getWeatherForecast().then((res) => {
-                if (res == null){
-                    setForecasts([])
-                }else {
-                    setForecasts(res)
-                }
-            })
-            //setLoading(false)
+    const getWindowsDimension = async () => {
+        const { innerWidth: width, innerHeight: height} = window;
+        return {
+            width, height
         }
-        loadWeather().then(async ()=>{
-            dlist.push({day: currentDate.getDate(),monthNumber:currentDate.getMonth(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
-            for (let i = 0; i < 4; i++){
-                currentDate.setDate(currentDate.getDate() + 1)
-                dlist.push({day: currentDate.getDate(), monthNumber:currentDate.getMonth(), month:getMonthAsString(currentDate.getMonth()), year:String(currentDate.getFullYear())})
-            }
-        }).finally(()=>{
-            setLoading(false)
-        })
+    }
 
+
+    const dayForecast:DDate[] = useMemo(() => {
+        const dlist: DDate[] = []
+        setLoading(true)
+        const loadWeather = async () => {
+            const foreCasts = await getWeatherForecast()
+            if (foreCasts === null) {
+                setForecasts([])
+            } else {
+                setForecasts(foreCasts)
+            }
+        }
+
+        loadWeather().then(async () => {
+            const dimensions = await getWindowsDimension()
+            const stopIndex = dimensions.width < DAY_BREAK_POINT ? 2 : 4
+
+            dlist.push({
+                day: currentDate.getDate(),
+                monthNumber: currentDate.getMonth(),
+                month: getMonthAsString(currentDate.getMonth()),
+                year: String(currentDate.getFullYear())
+            })
+            for (let i = 0; i < stopIndex; i++) {
+                currentDate.setDate(currentDate.getDate() + 1)
+                dlist.push({
+                    day: currentDate.getDate(),
+                    monthNumber: currentDate.getMonth(),
+                    month: getMonthAsString(currentDate.getMonth()),
+                    year: String(currentDate.getFullYear())
+                })
+            }
+        })
+        setLoading(false)
         return dlist
-    },[])
+    }, [])
+
+    useEffect(() => {
+    }, []);
 
 
 
     const DisplayDay = () => {
         return(
-            <Row className="day-widget justify-content-center mt-4">
-                {fiveDayWeek.map((day,index) => {
+            <div className="day-widget mt-4">
+                <Row className="justify-content-center m-0">
+                {dayForecast.map((day,index) => {
                     return(
                         <DayCard key={day.day} month={day.month} monthNumber={day.monthNumber} day={day.day} year={day.year}
                                  imageIndex={foreCasts[index].Day.Icon}
                                  temp={foreCasts[index].Temperature.Maximum.Value}/>
                     )})}
-            </Row>
+                </Row>
+            </div>
         )
     }
 
@@ -191,7 +214,9 @@ export const DailyTaskWidget = () => {
 
     return(
         <>
-            {loading || foreCasts.length < 5 ? <DisplayLoading /> : <DisplayDay />}
+            <div>
+                {loading || foreCasts.length < 5 ? <DisplayLoading /> : <DisplayDay />}
+            </div>
         </>
     )
 }

@@ -1,6 +1,16 @@
 export interface ToDo {
+    ID?: number,
     id: number,
     name: string,
     dueDate: Date,
-    done: boolean
+    completed: boolean,
+    list: number,
+    notes: string,
+    toDoListId: number
+}
+
+export interface ToDoList {
+    ID:number,
+    name:string,
+    accountId: number,
 }

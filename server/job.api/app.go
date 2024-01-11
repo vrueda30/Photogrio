@@ -47,7 +47,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"GET", "PUT", "POST", "PATCH", "OPTIONS"},
+		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"},
 		AllowHeaders:     []string{"origin", "content-type", "accept", "X-Custom-Header", "Authorization", "account"},
 		AllowCredentials: true,
 	}))
@@ -71,11 +71,12 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	err = db.AutoMigrate(&models.Job{}, &models.JobType{})
+	err = db.AutoMigrate(&models.Job{}, &models.JobType{}, &models.ToDo{}, &models.ToDoList{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	services.SetupRoutes(router, apiBasePath)
+	services.SetupTaskRoutes(router, apiBasePath)
 
 	port := os.Getenv("PORT")
 	if port == "" {

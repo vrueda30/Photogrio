@@ -2,27 +2,9 @@ package models
 
 import (
 	"database/sql"
-	"database/sql/driver"
 	"gorm.io/gorm"
 	"time"
 )
-
-type NullTime struct {
-	Time  time.Time
-	Valid bool
-}
-
-func (nt *NullTime) Scan(value interface{}) error {
-	nt.Time, nt.Valid = value.(time.Time)
-	return nil
-}
-
-func (nt NullTime) Value() (driver.Value, error) {
-	if !nt.Valid {
-		return nil, nil
-	}
-	return nt.Time, nil
-}
 
 type JobType struct {
 	gorm.Model

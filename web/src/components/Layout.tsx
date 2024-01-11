@@ -1,6 +1,5 @@
 import {Outlet} from "react-router-dom";
 import NavBar from "./NavBar.tsx";
-import {Container} from "reactstrap";
 import {useCallback, useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
@@ -10,10 +9,22 @@ import {GET_CONTACT_COOKIES
     , JOB_API_BASE_URL
     , ACCOUNT_API_BASE_URL} from "../pages/api-routes.tsx";
 import {Cookies} from "react-cookie";
+import {useIdleTimer} from "react-idle-timer";
 
 export const Layout = () => {
     const {user, getAccessTokenSilently} = useAuth0()
     const [setupStep, setSetupStep] = useState(0)
+    const [remaingTime, setRemainingTime] = useState(0)
+    const {logout} = useAuth0()
+
+    const onIdle = () => {
+        logout({logoutParams:{returnTo:"http://localhost:3000"}})
+    }
+    const { getRemainingTime } = useIdleTimer({
+        onIdle,
+        timeout:  30 * 60 * 1000,
+        throttle: 500
+    })
 
     const get_cookies_url = `${GET_USER_COOKIES}${user?.email}`
 
@@ -59,6 +70,10 @@ export const Layout = () => {
     },[setupStep])
 
     useEffect(() => {
+        console.log("Layout use effect called")
+        const interval = setInterval(()=>{
+            setRemainingTime(Math.ceil(getRemainingTime() / 1000))
+        },1000)
         getAccessTokenSilently().then((t) => {
             axios.get(get_cookies_url, {
                 headers: {
@@ -80,18 +95,19 @@ export const Layout = () => {
                        )
                 }
             )
-
+            return () => {
+                clearInterval(interval)
+            }
         })
-
-    },[getAccessTokenSilently, get_cookies_url, setupAccount, setupStep])
+    },[])
 
     return (
-        <>
+        <div className="h-100 w-100 d-inline-block">
             <NavBar/>
-            <Container fluid className="main-container container-fluid">
+            <div className="ps-0 pe-4">
                     <Outlet/>
-            </Container>
-        </>
+            </div>
+        </div>
     )
 }
 

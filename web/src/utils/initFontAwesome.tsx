@@ -16,6 +16,8 @@ import {
     faFile,
     faSpinner,
     faGear,
+    faTrashCan,
+    faRightFromBracket
 } from "@fortawesome/pro-light-svg-icons"
 
 function initFontAwesome() {
@@ -32,6 +34,8 @@ function initFontAwesome() {
     library.add(faList)
     library.add(faSpinner)
     library.add(faGear)
+    library.add(faTrashCan)
+    library.add(faRightFromBracket)
 }
 
 export default initFontAwesome;

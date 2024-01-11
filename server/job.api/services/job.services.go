@@ -98,7 +98,7 @@ func createJob(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error creating job"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"status": "success"})
+	ctx.JSON(http.StatusOK, job)
 	return
 }
 

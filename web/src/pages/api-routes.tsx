@@ -10,3 +10,4 @@ export const GET_ACCOUNT_SETUP_STATUS_URL = import.meta.env.VITE_ACCOUNT_SETUP_S
 export const JOB_API_BASE_URL = import.meta.env.VITE_JOB_API_URL
 export const ACCOUNT_API_BASE_URL = import.meta.env.VITE_ACCOUNT_API_URL
 export const WEATHER_API_BASE_URL = import.meta.env.VITE_WEATHER_API_URL
+export const TODO_API_BASE_URL = import.meta.env.VITE_TODO_API_URL

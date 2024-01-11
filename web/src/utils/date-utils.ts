@@ -21,10 +21,10 @@ export const lastVisible = (date:Date) => {
 }
 
 export const timeToString = (hour: number, minutes: number) => {
-    const ampm = hour >= 12 ? "PM" : "AM";
+    const ampm = hour >= 12 ? "pm" : "am";
     const actualHour = hour > 12 ? hour - 12 : hour;
     const hourPadded = actualHour.toString().padStart(2, "0")
     const minutesPadded = minutes.toString().padEnd(2, "0")
-    const timeAsString = `${hourPadded}:${minutesPadded} ${ampm}`
-    return timeAsString === "00:00 AM" ? "12:00 AM" : timeAsString
+    const timeAsString = `${hourPadded}:${minutesPadded}${ampm}`
+    return timeAsString === "00:00am" ? "12:00am" : timeAsString
 }

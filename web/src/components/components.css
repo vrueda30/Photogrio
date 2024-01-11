@@ -16,4 +16,18 @@
   background-color: #bee3f8;
 }
 
+.to-do-panel-header {
+  background-color: #bee3f8;
+  overflow: hidden;
+}
+
+.to-do-panel-view {
+  margin-top: 15px;
+  border: #cbd5e0 solid thin;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: #cbd5e0 2px 2px 4px;
+  height: 500px;
+}
+
 /*# sourceMappingURL=components.css.map */

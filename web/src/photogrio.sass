@@ -3,12 +3,15 @@
 
 body
   padding: 0
-  margin: 1rem
-  background-color: $gray-200
+  margin: 0
+  background-color: white
   font-weight: 400
   line-height: 1.563
   color: $text-color
   caret-color: $text-color
+
+body > #root > div
+  min-height: min-content
 
 @media (prefers-color-scheme: dark)
   body
@@ -43,6 +46,8 @@ p > *:last-child
 .main-container
   padding: 2rem
   min-height: 600px
+  min-width: 1680px
+  overflow-y: scroll
 
 .menu-icon
   font-size: 1.5em
@@ -186,5 +191,46 @@ textarea:focus
 .calendar
   min-height: 800px
 
+.dashboard
+  width: 100%
+.to-dos
+  margin: 0
+  height: 100vh
+  display: flex
+  background-color: $gray-100
 
+.to-do-side-bar
+  width: 250px
+  height: 100%
+  float: left
+  padding-top: 20px
+  background-color: $gray-100
 
+.to-do-panel
+  float: left
+  height: 100vh
+  box-shadow: -5px 0  20px -15px black
+  border-radius: 40px 0 0 0
+  background-color: white
+.to-do-panel-body
+  margin-top: 20px
+.to-do-list-sidebar-item
+  font-size: .95rem
+  border: solid thin black
+  margin: 5px
+  background-color: $blue-600
+  color: white
+  border-radius: 10px
+.active-todo-sidebar-item
+  background-color: white
+  color: black
+.to-do-list-sidebar-item:hover
+    cursor: pointer
+.trash-icon
+  color: $red-500
+.trash-icon:hover
+  cursor: pointer
+.new-to-do-list-form
+  width: 350px
+.to-do-view
+  margin-top: 75px

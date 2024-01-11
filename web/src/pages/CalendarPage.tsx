@@ -57,6 +57,13 @@ const CalendarPage = () => {
         return await res.data
     }
 
+    const handleEventAdd = async (jevent:CalendarEvent) => {
+        console.log(JSON.stringify(jevent))
+        console.log(JSON.stringify(calendarEvents))
+        setCalendarEvents([...calendarEvents, jevent])
+        console.log(JSON.stringify(calendarEvents))
+    }
+
     useEffect(() => {
         const startDate = pdate.firstVisible(new Date())
         const endDate = pdate.lastVisible(new Date())
@@ -65,7 +72,6 @@ const CalendarPage = () => {
                 e.start = new Date(e.start.toLocaleString())
                 e.end = new Date(e.end.toLocaleString())
             })
-
             setCalendarEvents(res)
         })
 
@@ -87,7 +93,7 @@ const CalendarPage = () => {
                       views={views}
                       selectable />
             </div>
-            <JobEventForm modal={showEventForm} startDateTime={event.start} endDateTime={event.end} toggle={toggle}/>
+            <JobEventForm modal={showEventForm} startDateTime={event.start} endDateTime={event.end} toggle={toggle} handleEventAdd={handleEventAdd}/>
         </div>
     )
 }

@@ -6,6 +6,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="job.api" />
-    <orderEntry type="module" module-name="scheduling.api" />
   </component>
 </module>

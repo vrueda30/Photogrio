@@ -1,7 +1,7 @@
 import {Task} from "../../interfaces/daycardinterfaces.ts";
 import "./day-card-styles.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Row} from "reactstrap";
+import {Col, Row} from "reactstrap";
 
 export interface TaskProps{
     tasks: Task[]
@@ -11,12 +11,12 @@ export interface TaskProps{
 export const DayCardItem = (props:TaskProps) => {
     const displayTasks = props.tasks.map((t) => {
         return(
-            <div className="day-card-line-item mb-2">
-                <Row>
-                    <div className="line-item-grip"><FontAwesomeIcon icon="grip-lines-vertical" /></div>
-                    <div className="w-auto">{t.start} {t.name}</div>
+                <Row className="d-flex day-card-line-item align-items-start justify-content-start mt-1 ps-2 p-0">
+                    <Col className="d-flex justify-content-start align-items-center">
+                        <FontAwesomeIcon icon={["fal","calendar"]} className="me-2" />
+                        <span className="line-item-txt"> {t.start} {t.name}</span>
+                    </Col>
                 </Row>
-            </div>
         )
     })
 

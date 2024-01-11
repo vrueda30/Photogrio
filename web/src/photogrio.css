@@ -661,12 +661,16 @@ button.rbc-input::-moz-focus-inner {
 
 body {
   padding: 0;
-  margin: 1rem;
-  background-color: #edf2f7;
+  margin: 0;
+  background-color: white;
   font-weight: 400;
   line-height: 1.563;
   color: #2d3748;
   caret-color: #2d3748;
+}
+
+body > #root > div {
+  min-height: min-content;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -709,6 +713,8 @@ p > *:last-child {
 .main-container {
   padding: 2rem;
   min-height: 600px;
+  min-width: 1680px;
+  overflow-y: scroll;
 }
 
 .menu-icon {
@@ -887,6 +893,71 @@ textarea:focus {
 
 .calendar {
   min-height: 800px;
+}
+
+.dashboard {
+  width: 100%;
+}
+
+.to-dos {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  background-color: #f8f9fa;
+}
+
+.to-do-side-bar {
+  width: 250px;
+  height: 100%;
+  float: left;
+  padding-top: 20px;
+  background-color: #f8f9fa;
+}
+
+.to-do-panel {
+  float: left;
+  height: 100vh;
+  box-shadow: -5px 0 20px -15px black;
+  border-radius: 40px 0 0 0;
+  background-color: white;
+}
+
+.to-do-panel-body {
+  margin-top: 20px;
+}
+
+.to-do-list-sidebar-item {
+  font-size: 0.95rem;
+  border: solid thin black;
+  margin: 5px;
+  background-color: #3182ce;
+  color: white;
+  border-radius: 10px;
+}
+
+.active-todo-sidebar-item {
+  background-color: white;
+  color: black;
+}
+
+.to-do-list-sidebar-item:hover {
+  cursor: pointer;
+}
+
+.trash-icon {
+  color: #f56565;
+}
+
+.trash-icon:hover {
+  cursor: pointer;
+}
+
+.new-to-do-list-form {
+  width: 350px;
+}
+
+.to-do-view {
+  margin-top: 75px;
 }
 
 /*# sourceMappingURL=photogrio.css.map */

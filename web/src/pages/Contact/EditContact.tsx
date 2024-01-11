@@ -108,6 +108,7 @@ export const EditContact = () => {
     const updateContact = async(values:Contact) => {
         const token = await getAccessTokenSilently()
         try{
+            values.contactType = +values.contactType
         const res = await axios.put(`${CONTACT_API_BASE_URL}`, values,{
             headers: {
                 Authorization: `Bearer ${token}`
@@ -131,7 +132,7 @@ export const EditContact = () => {
                 }, birthDay: res.data.birthDay,
                 city: res.data.city,
                 profilePic: res.data.profilePic,
-                contactType: res.data.contactType,
+                contactType: +res.data.contactType,
                 notes: res.data.notes,
                 address1: res.data.address.address1,
                 address2: res.data.address.address2,
@@ -148,7 +149,7 @@ export const EditContact = () => {
     }
 
     useEffect(() => {
-        loadContact().then()
+        loadContact()
     }, [])
 
     const editForm = () => {
@@ -322,7 +323,9 @@ export const EditContact = () => {
         return editForm()
     }else{
         return (
-            <ContactCard callback={()=>{setEdit(!edit)}} contact={contact}  />
+            <div className="pt-5">
+                <ContactCard callback={()=>{setEdit(!edit)}} contact={contact}  />
+            </div>
         )
     }
 }
