@@ -18,7 +18,7 @@ export const Layout = () => {
     const {logout} = useAuth0()
 
     const onIdle = () => {
-        logout({logoutParams:{returnTo:"http://localhost:3000"}})
+        logout({logoutParams:{returnTo:"https://localhost:3000"}})
     }
     const { getRemainingTime } = useIdleTimer({
         onIdle,

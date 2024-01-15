@@ -1,11 +1,14 @@
-import {Col, Container, Row} from "reactstrap";
+import {Row} from "reactstrap";
 import DayCard from "./DayCard.tsx";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import './day-card-styles.css'
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios"
-import {ACCOUNT_API_BASE_URL, SCHEDULING_API_BASE_URL, WEATHER_API_BASE_URL} from "../../pages/api-routes.tsx";
+import {WEATHER_API_BASE_URL} from "../../pages/api-routes.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {ABSTRACT_URI} from "../../Constants.ts";
+import {useSetState} from "../../hooks/UseSetState.ts";
+import {Cookies} from "react-cookie";
 
 const DAY_BREAK_POINT = 920
 
@@ -69,13 +72,9 @@ export interface Coordinates{
 }
 
 export interface Position{
-    coords: Coords
+    coords: Coordinates
 }
 
-export interface Coords{
-    latitude: number
-    longitude: number
-}
 
 export interface Forecast {
     Date: string,
@@ -113,16 +112,24 @@ export interface DayNight {
     HasPrecipitation: boolean
 }
 export const DailyTaskWidget = () => {
-    const [pos, savePos] = useState<Coordinates>({latitude: 0, longitude: 0})
+    const [pos = null, savePos] = useState<Coordinates>()
     const [loading, setLoading] = useState(true)
-    const [foreCasts, setForecasts] = useState<Forecast[]>([])
+    const [foreCasts, setForecasts] = useState<Forecast[] | null>(null)
     const currentDate = new Date();
     const {getAccessTokenSilently} = useAuth0()
+    const [ip, setIP] = useState("")
+
+    const getIP = async () => {
+        const res = await axios.get("https://api.ipify.org/?format=json")
+        setIP(res.data.ip)
+    }
 
     const getWeatherForecast = async():Promise<Forecast[]> => {
+        const locationCookie = new Cookies().get('location') as Coordinates
+        console.debug(locationCookie)
         const token = await getAccessTokenSilently()
-        await getLocation()
-        const result = await axios.get(`${WEATHER_API_BASE_URL}get_five_day_forecast`, {
+        const queryParams = locationCookie ? `?latitude=${locationCookie.latitude}&longitude=${locationCookie.longitude}` : ''
+        const result = await axios.get(`${WEATHER_API_BASE_URL}get_five_day_forecast${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -130,14 +137,30 @@ export const DailyTaskWidget = () => {
         })
         return result.data
     }
+
     const getLocation = async () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(savePosition)
-        }
+        return await axios.get(`${ABSTRACT_URI}ip_address=${ip}`).then((res) => {
+            return res.data
+        }).catch((e) => {
+            console.debug(e)
+        })
     }
 
-    const savePosition = async (position:Position) => {
-        savePos({latitude: position.coords.latitude, longitude: position.coords.longitude})
+    /*const getLocationPromise = new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject)
+    })*/
+
+    const savePosition = async (latitude: number, longitude: number) => {
+        console.debug(`incoming lat and long: ${latitude}:${longitude}`)
+        const loc:Coordinates = {
+                latitude: latitude,
+                longitude: longitude
+        }
+        console.log(`saving coords: ${JSON.stringify(loc)}`)
+        const locCookie = new Cookies()
+        const expireDate = new Date()
+        expireDate.setHours(expireDate.getHours() + 24)
+        locCookie.set('location', loc)
     }
 
     const getWindowsDimension = async () => {
@@ -147,18 +170,31 @@ export const DailyTaskWidget = () => {
         }
     }
 
+    const loadWeather = async () => {
+        try {
+            const lCookie = new Cookies()
+            const currentLocation = lCookie.get('location') as Coordinates
+            if (!currentLocation || currentLocation.latitude === undefined || currentLocation.longitude === undefined) {
+                await getIP()
+                const location = await getLocation()
+                console.debug(`received from getLocation: ${JSON.stringify(location)}`)
+                if (location != null) {
+                    console.log(location.latitude)
+                    await savePosition(location.latitude, location.longitude)
+                }
+            }
+            const forecasts = await getWeatherForecast()
+            if (forecasts){
+                setForecasts([...forecasts])}
+        } catch(e){
+            console.debug(e)
+        }
+    }
 
     const dayForecast:DDate[] = useMemo(() => {
         const dlist: DDate[] = []
         setLoading(true)
-        const loadWeather = async () => {
-            const foreCasts = await getWeatherForecast()
-            if (foreCasts === null) {
-                setForecasts([])
-            } else {
-                setForecasts(foreCasts)
-            }
-        }
+
 
         loadWeather().then(async () => {
             const dimensions = await getWindowsDimension()
@@ -179,15 +215,9 @@ export const DailyTaskWidget = () => {
                     year: String(currentDate.getFullYear())
                 })
             }
-        })
-        setLoading(false)
+        }).finally(()=> setLoading(false))
         return dlist
     }, [])
-
-    useEffect(() => {
-    }, []);
-
-
 
     const DisplayDay = () => {
         return(
@@ -196,8 +226,8 @@ export const DailyTaskWidget = () => {
                 {dayForecast.map((day,index) => {
                     return(
                         <DayCard key={day.day} month={day.month} monthNumber={day.monthNumber} day={day.day} year={day.year}
-                                 imageIndex={foreCasts[index].Day.Icon}
-                                 temp={foreCasts[index].Temperature.Maximum.Value}/>
+                                 imageIndex={foreCasts ? foreCasts[index].Day.Icon : null}
+                                 temp={foreCasts  ? foreCasts[index].Temperature.Maximum.Value : null} />
                     )})}
                 </Row>
             </div>
@@ -215,7 +245,7 @@ export const DailyTaskWidget = () => {
     return(
         <>
             <div>
-                {loading || foreCasts.length < 5 ? <DisplayLoading /> : <DisplayDay />}
+                {loading || !foreCasts ? <DisplayLoading /> : <DisplayDay />}
             </div>
         </>
     )

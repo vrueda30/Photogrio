@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os"
 	"photogrio-server/middleware"
+	"photogrio-server/models"
 	"photogrio-server/security"
-	"photogrio-server/services/models"
 )
 
 const userPath = "users"
@@ -48,9 +48,7 @@ func getUserSessionInfo(context *gin.Context) {
 
 	cipherText := security.Encrypt(acctAsBytes, os.Getenv("SESSION_KEY"))
 	log.Print(cipherText)
-
 	context.SetCookie("account", string(cipherText), 60*60*24, "/", "localhost", false, true)
-
 	context.JSON(http.StatusOK, res)
 	return
 }

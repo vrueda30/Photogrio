@@ -46,7 +46,7 @@ func main() {
 	}
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://localhost:3000"},
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"},
 		AllowHeaders:     []string{"origin", "content-type", "accept", "X-Custom-Header", "Authorization", "account"},
 		AllowCredentials: true,
@@ -82,5 +82,6 @@ func main() {
 	if port == "" {
 		port = "5004"
 	}
-	log.Fatal(router.Run(fmt.Sprintf(":%s", port)))
+	log.Fatal(router.RunTLS(fmt.Sprintf(":%s", port), "localhost.pem", "localhostkey.pem"))
+	//log.Fatal(router.Run(fmt.Sprintf(":%s", port)))
 }

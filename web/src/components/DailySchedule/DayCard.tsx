@@ -9,7 +9,7 @@ import {CalendarEvent} from "../../interfaces/jobs.ts";
 import {timeToString} from "../../utils/date-utils.ts";
 
 export const DayCard = (props: Props) => {
-    const [imgIndex, setImgIndex] = useState("01")
+    const [imgIndex = null, setImgIndex] = useState<string | null>(null)
     const {getAccessTokenSilently} = useAuth0()
     const [jobs, setJobs] = useState<CalendarEvent[]>([])
     const [tasks, setTasks] = useState<Task[]>([])
@@ -60,9 +60,11 @@ export const DayCard = (props: Props) => {
     }
 
     useEffect(() => {
-        getIndexAsString(props?.imageIndex).then((r) => {
-            setImgIndex(r)
-        })
+        if (props.imageIndex) {
+            getIndexAsString(props?.imageIndex).then((r) => {
+                setImgIndex(r)
+            })
+        }
         getEventsForDay().catch(() => {
             console.log("Error retrieving jobs for the day")
         })
@@ -70,7 +72,7 @@ export const DayCard = (props: Props) => {
     return(
             <Col className="day-card col-12 col-xl-2 m-1">
                 <Row className="justify-content-center align-items-center daily-card-header">
-                    {props?.month} {props?.day}, {props?.year}  {props?.temp}&#8457; <img alt="weather icon" className="weather-icon" src={`https://developer.accuweather.com/sites/default/files/${imgIndex}-s.png`} />
+                    {props?.month} {props?.day}, {props?.year}  {props?.temp}&#8457; {imgIndex && <img alt="weather icon" className="weather-icon" src={`https://developer.accuweather.com/sites/default/files/${imgIndex}-s.png`} />}
                 </Row>
                 <Row className="day-card-body d-flex pb-2">
                     <Col className="col-12 p-0 m-0">

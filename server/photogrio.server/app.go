@@ -11,8 +11,8 @@ import (
 	"log"
 	"os"
 	"photogrio-server/database"
+	"photogrio-server/models"
 	"photogrio-server/services"
-	"photogrio-server/services/models"
 	"time"
 )
 
@@ -39,7 +39,7 @@ func main() {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://localhost:3000"},
 		AllowMethods:     []string{"GET", "PUT", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"origin", "content-type", "accept", "X-Custom-Header", "Authorization", "models"},
 		AllowCredentials: true,
@@ -60,18 +60,28 @@ func main() {
 	services.SetupRoutes(router, basePath)
 	services.SetupUserRoutes(router, basePath)
 	services.SetupWeatherRoutes(router, basePath)
+	services.SetupContactRoutes(router, basePath)
 	dsn := database.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = db.AutoMigrate(&models.Account{}, &models.User{})
+
+	// start
+	router.Static("/images", "./images")
+	SeedData()
+	if err != nil {
+		log.Fatal(err)
+	}
+	//finish
+
+	err = db.AutoMigrate(&models.Account{}, &models.User{}, &models.Contact{}, &models.Address{})
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Fatal(router.Run(":5001"))
+	log.Fatal(router.RunTLS(fmt.Sprintf(":%s", "5001"), "localhost.pem", "localhostkey.pem"))
+	//log.Fatal(router.Run(":5001"))
 }
 
 func MakeLogDirectory() {

@@ -53,6 +53,7 @@ export const EditContact = () => {
             },
             withCredentials: true
         })
+        console.log(res.data.url)
         setImageUrl(res.data.url)
         const updateContact = {...contact}
         updateContact.profilePic = res.data.url

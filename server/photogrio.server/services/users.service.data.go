@@ -3,15 +3,12 @@ package services
 import (
 	"errors"
 	"log"
-	"photogrio-server/services/models"
+	"photogrio-server/database"
+	"photogrio-server/models"
 )
 
-func init() {
-
-}
-
 func CreateUser(user models.User) (int, error) {
-	res := DB.Create(&user)
+	res := database.DB.Create(&user)
 	if res.Error != nil {
 		log.Print(res.Error)
 		return -1, res.Error
@@ -26,7 +23,7 @@ func CreateUser(user models.User) (int, error) {
 
 func GetUserSessionInfoByEmail(email string) (*models.UserSessionInfo, error) {
 	var user = &models.User{}
-	result := DB.Where("email = ?", email).First(&user)
+	result := database.DB.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		log.Print(result.Error)
 		return nil, result.Error

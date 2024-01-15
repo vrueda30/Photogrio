@@ -3,8 +3,8 @@ export interface Props{
     day: string | number,
     year: string,
     monthNumber: number,
-    imageIndex?: number | undefined,
-    temp?: number
+    imageIndex?: number | undefined | null,
+    temp?: number | undefined | null
 }
 
 export interface Task{

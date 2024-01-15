@@ -120,7 +120,7 @@ export const NavBar = () => {
                   <div className="ms-1" onClick={()=>{
                       logout({
                           logoutParams:{
-                              returnTo:"http://localhost:3000"
+                              returnTo:"https://localhost:3000"
                           }
                       })
                   }}>

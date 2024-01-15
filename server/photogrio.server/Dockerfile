@@ -20,6 +20,8 @@ COPY .env.development /photogrio/
 RUN mkdir -p /logs/
 RUN apt update
 RUN apt install nano
+COPY localhost.pem /photogrio/
+COPY localhostkey.pem /photogrio/
 COPY --from=build-env /go/bin/dlv /
 COPY --from=build-env /server /photogrio/
 

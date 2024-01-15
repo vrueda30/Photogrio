@@ -1,12 +1,12 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"log"
 	"os"
-	"time"
 )
 
 const (
@@ -16,10 +16,15 @@ const (
 	dbname   = "photogriodb"
 )
 
-var DbConn *sql.DB
+var DB *gorm.DB
 
 func init() {
-
+	dsn := Dsn()
+	gdb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Println(err)
+	}
+	DB = gdb
 }
 
 func Dsn() string {
@@ -54,20 +59,4 @@ func Dsn() string {
 	}
 	log.Printf("%s:%s@tcp(%s)/%s", user, pass, host, db)
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, pass, host, db)
-}
-
-func SetupDatabase() {
-	var err error
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	DbConn, err = sql.Open("mysql", Dsn())
-	if err != nil {
-		log.Print(err)
-	}
-
-	DbConn.SetMaxOpenConns(3)
-	DbConn.SetMaxIdleConns(3)
-	DbConn.SetConnMaxLifetime(60 * time.Second)
 }

@@ -18,5 +18,7 @@ RUN apt update
 RUN apt install nano
 EXPOSE 5004 40004
 WORKDIR /job-api
+COPY localhost.pem /job-api/
+COPY localhostkey.pem /job-api/
 COPY --from=build-env /go/bin/dlv /
 COPY --from=build-env /server /job-api/

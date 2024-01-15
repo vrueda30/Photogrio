@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"photogrio-server/auth0client"
 	"photogrio-server/middleware"
-	"photogrio-server/services/models"
+	models2 "photogrio-server/models"
 )
 
 const accountPath = "accounts"
@@ -20,7 +20,7 @@ func SetupRoutes(router *gin.Engine, apiBasePath string) {
 }
 
 func updateStatus(context *gin.Context) {
-	id := middleware.Account.AccountId
+	id := middleware.AccountCookie.AccountId
 	err := IncrementSetupStep(id)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -31,7 +31,7 @@ func updateStatus(context *gin.Context) {
 }
 
 func getSetupStatus(context *gin.Context) {
-	res, err := GetSetupStatus(int(middleware.Account.AccountId))
+	res, err := GetSetupStatus(int(middleware.AccountCookie.AccountId))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -41,7 +41,7 @@ func getSetupStatus(context *gin.Context) {
 }
 
 func createAccount(context *gin.Context) {
-	var account models.Signup
+	var account models2.Signup
 	if err := context.ShouldBindJSON(&account); err != nil {
 		log.Print(err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -59,7 +59,7 @@ func createAccount(context *gin.Context) {
 		return
 	}
 	log.Print(id)
-	var newAccount = models.Account{CompanyName: account.Company}
+	var newAccount = models2.Account{CompanyName: account.Company}
 	res, err := CreateAccount(newAccount)
 	newAccount.ID = uint(res)
 	if err != nil {
@@ -67,7 +67,7 @@ func createAccount(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	user := models.User{Account: &newAccount, Name: account.Name, AuthId: *id, Email: account.Email}
+	user := models2.User{Account: &newAccount, Name: account.Name, AuthId: *id, Email: account.Email}
 	res, err = CreateNewUser(user)
 	if res < 0 || err != nil {
 		log.Print(err)

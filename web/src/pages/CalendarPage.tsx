@@ -58,10 +58,9 @@ const CalendarPage = () => {
     }
 
     const handleEventAdd = async (jevent:CalendarEvent) => {
-        console.log(JSON.stringify(jevent))
-        console.log(JSON.stringify(calendarEvents))
+        jevent.start = new Date(jevent.start)
+        jevent.end = new Date(jevent.end)
         setCalendarEvents([...calendarEvents, jevent])
-        console.log(JSON.stringify(calendarEvents))
     }
 
     useEffect(() => {
@@ -79,7 +78,7 @@ const CalendarPage = () => {
 
     return(
         <div>
-            <div className="calendar">
+            <div className="calendar ms-4 mt-4">
                 <Calendar className="calendar"
                       localizer={localizer}
                       onSelectSlot={handleSelectSlot}
