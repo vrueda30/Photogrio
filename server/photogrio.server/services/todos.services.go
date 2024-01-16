@@ -3,17 +3,17 @@ package services
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"job.api/common"
-	middleware "job.api/middelware"
-	"job.api/models"
 	"log"
 	"net/http"
+	"photogrio-server/common"
+	"photogrio-server/middleware"
+	"photogrio-server/models"
 	"strconv"
 )
 
 const toDoPath = "todos"
 
-func SetupTaskRoutes(router *gin.Engine, apiBasePath string) {
+func SetupTODORoutes(router *gin.Engine, apiBasePath string) {
 	toDoRoute := router.Group(fmt.Sprintf("%s/%s/", apiBasePath, toDoPath))
 	toDoRoute.POST(fmt.Sprintf("%s", "create_todo"), middleware.CheckJWT(), middleware.ReadCookie(), createTodo)
 	toDoRoute.POST(fmt.Sprintf("%s", "create_todo_list"), middleware.CheckJWT(), middleware.ReadCookie(), createToDoList)
@@ -29,7 +29,7 @@ func getTodosForList(ctx *gin.Context) {
 		common.SendBadRequest(ctx, "Error retrieving todos")
 		return
 	}
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	todos, err := GetToDosForList(listId, accountId)
 	if err != nil {
 		common.HandlePanicError(err)
@@ -49,7 +49,7 @@ func deleteToDoList(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error deleting to-do list"})
 		return
 	}
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	err = DeleteToDoList(listId, accountId)
 	if err != nil {
 		common.HandlePanicError(err)
@@ -61,7 +61,7 @@ func deleteToDoList(ctx *gin.Context) {
 }
 
 func getToDoLists(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	res, err := GetToDoLists(accountId)
 	if err != nil {
 		common.HandlePanicError(err)
@@ -74,7 +74,7 @@ func getToDoLists(ctx *gin.Context) {
 }
 
 func createToDoList(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	newToDoList := &models.ToDoList{}
 	err := ctx.ShouldBindJSON(newToDoList)
 	if err != nil {
@@ -96,7 +96,7 @@ func createToDoList(ctx *gin.Context) {
 }
 
 func createTodo(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	newTodo := &models.ToDo{}
 	err := ctx.ShouldBindJSON(newTodo)
 	log.Printf("model: %v", newTodo)

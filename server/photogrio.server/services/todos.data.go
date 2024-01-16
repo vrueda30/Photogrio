@@ -1,12 +1,12 @@
 package services
 
 import (
-	"job.api/data"
-	"job.api/models"
+	"photogrio-server/database"
+	"photogrio-server/models"
 )
 
 func CreateTodo(newTodo *models.ToDo) (*models.ToDo, error) {
-	res := data.DB.Create(&newTodo)
+	res := database.DB.Create(&newTodo)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -15,7 +15,7 @@ func CreateTodo(newTodo *models.ToDo) (*models.ToDo, error) {
 }
 
 func CreateToDoList(newToDoList *models.ToDoList) (*models.ToDoList, error) {
-	res := data.DB.Create(&newToDoList)
+	res := database.DB.Create(&newToDoList)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -25,7 +25,7 @@ func CreateToDoList(newToDoList *models.ToDoList) (*models.ToDoList, error) {
 
 func GetToDosForList(listId int, accountId int) (*[]models.ToDo, error) {
 	toDos := &[]models.ToDo{}
-	res := data.DB.Where("account_id=? AND to_do_list_id=?", accountId, listId).Find(&toDos)
+	res := database.DB.Where("account_id=? AND to_do_list_id=?", accountId, listId).Find(&toDos)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -35,7 +35,7 @@ func GetToDosForList(listId int, accountId int) (*[]models.ToDo, error) {
 
 func GetToDoLists(accountId int) (*[]models.ToDoList, error) {
 	toDoLists := &[]models.ToDoList{}
-	res := data.DB.Where("account_id=?", accountId).Order("name asc").Find(&toDoLists)
+	res := database.DB.Where("account_id=?", accountId).Order("name asc").Find(&toDoLists)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -44,11 +44,11 @@ func GetToDoLists(accountId int) (*[]models.ToDoList, error) {
 }
 
 func DeleteToDoList(listId int, accountId int) error {
-	res := data.DB.Where("account_id=? AND to_do_list_id=?", accountId, listId).Delete(&models.ToDo{})
+	res := database.DB.Where("account_id=? AND to_do_list_id=?", accountId, listId).Delete(&models.ToDo{})
 	if res.Error != nil {
 		return res.Error
 	}
-	res = data.DB.Delete(&models.ToDoList{}, listId)
+	res = database.DB.Delete(&models.ToDoList{}, listId)
 	if res.Error != nil {
 		return res.Error
 	}

@@ -4,17 +4,18 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"job.api/common"
-	middleware "job.api/middelware"
-	"job.api/models"
 	"log"
 	"net/http"
+	"photogrio-server/common"
+	"photogrio-server/database"
+	"photogrio-server/middleware"
+	"photogrio-server/models"
 	"time"
 )
 
 const apiPath = "jobs"
 
-func SetupRoutes(router *gin.Engine, apiBasePath string) {
+func SetupJobsRoutes(router *gin.Engine, apiBasePath string) {
 	jobService := router.Group(fmt.Sprintf("%s/%s/", apiBasePath, apiPath))
 	jobService.GET(fmt.Sprintf("%s", "get_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), getJobs)
 	jobService.GET(fmt.Sprintf("%s", "setup_jobs"), middleware.CheckJWT(), middleware.ReadCookie(), setupJobs)
@@ -32,14 +33,14 @@ func getJobsByDay(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error getting jobs for the day"})
 		return
 	}
-	jobs, err := GetJobsForDay(date, middleware.Cookie.AccountId)
+	jobs, err := GetJobsForDay(date, middleware.AccountCookie.AccountId)
 	calendarViewJobs := convertToCalendarView(jobs)
 	ctx.JSON(http.StatusOK, calendarViewJobs)
 	return
 }
 
 func getCalendarJobs(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	startString := ctx.Query("start")
 	start, err := time.Parse(time.RFC3339, startString)
 	if err != nil {
@@ -105,9 +106,9 @@ func createJob(ctx *gin.Context) {
 func convertDtoToJob(job *models.JobCreateDTO) *models.Job {
 	newJob := &models.Job{
 		JobTypeId:    job.JobType,
-		JobDateStart: sql.NullTime{Time: job.JobDateStart, Valid: true},
-		JobDateEnd:   sql.NullTime{Time: job.JobDateEnd, Valid: true},
-		AccountId:    middleware.Cookie.AccountId,
+		JobDateStart: database.NullTime{sql.NullTime{Time: job.JobDateStart, Valid: true}},
+		JobDateEnd:   database.NullTime{sql.NullTime{Time: job.JobDateEnd, Valid: true}},
+		AccountId:    middleware.AccountCookie.AccountId,
 		Name:         job.Name,
 		Notes:        job.Notes,
 		Location:     job.Location,
@@ -118,7 +119,7 @@ func convertDtoToJob(job *models.JobCreateDTO) *models.Job {
 }
 
 func getJobTypes(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	jobTypes, err := GetJobTypes(accountId)
 	if err != nil {
 		common.HandlePanicError(err)
@@ -130,10 +131,10 @@ func getJobTypes(ctx *gin.Context) {
 }
 
 func setupJobs(ctx *gin.Context) {
-	accountId := middleware.Cookie.AccountId
+	accountId := middleware.AccountCookie.AccountId
 	err := seedJobTypes(accountId)
 	if err != nil {
-		common.HandleError(err)
+		common.HandlePanicError(err)
 		ctx.JSON(http.StatusBadRequest, gin.Error{Err: err})
 		return
 	}

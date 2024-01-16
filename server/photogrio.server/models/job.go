@@ -1,8 +1,8 @@
 package models
 
 import (
-	"database/sql"
 	"gorm.io/gorm"
+	"photogrio-server/database"
 	"time"
 )
 
@@ -15,16 +15,16 @@ type JobType struct {
 
 type Job struct {
 	gorm.Model
-	Name         string       `json:"name"`
-	AccountId    int          `json:"accountId"`
-	JobTypeId    int          `json:"jobId"`
-	JobType      JobType      `json:"job"`
-	Location     string       `json:"location"`
-	JobDateStart sql.NullTime `json:"jobDateStart"`
-	JobDateEnd   sql.NullTime `json:"jobDateEnd"`
-	ClientId     int          `json:"clientId"`
-	Notes        string       `json:"notes"`
-	AllDay       bool         `json:"allDay"`
+	Name         string            `json:"name"`
+	AccountId    int               `json:"accountId"`
+	JobTypeId    int               `json:"jobId"`
+	JobType      JobType           `json:"job"`
+	Location     string            `json:"location"`
+	JobDateStart database.NullTime `json:"jobDateStart"`
+	JobDateEnd   database.NullTime `json:"jobDateEnd"`
+	ClientId     int               `json:"clientId"`
+	Notes        string            `json:"notes"`
+	AllDay       bool              `json:"allDay"`
 }
 
 type JobCreateDTO struct {

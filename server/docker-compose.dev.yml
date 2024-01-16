@@ -31,33 +31,7 @@ services:
     command: /dlv --headless --listen=:40000 --api-version=2 exec /photogrio/server
     volumes:
       - photogrio-images:/photogrio/images
-    depends_on:
-      - db
-  job-api:
-    container_name: job-api
-    build: ./job.api
-    restart: always
-    ports:
-      - 5004:5004
-      - 40004:40004
-    environment:
-      - SCHEDULING_API_ENV=development
-      - HOST_NAME=photogriodb
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=photogriodb
-      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
-      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
-      - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
-      - AUTH0_AUTHORIZATION_URI=${AUTH0_AUTHORIZATION_URI}
-      - AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
-      - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
-      - SESSION_KEY=${SESSION_KEY}
-      - USE_SSL=false
-      - URL_BASE=http://localhost:5004
-    command: /dlv --headless --listen=:40004 --api-version=2 exec /job-api/server
-    volumes:
-      - job-logs:/job-api/logs
+      - photogrio-logs:/photogrio/logs
     depends_on:
       - db
   db:
@@ -76,7 +50,5 @@ services:
 
 volumes:
   photogrio-data:
-  contact-logs:
-  contact-images:
+  photogrio-logs:
   photogrio-images:
-  job-logs:

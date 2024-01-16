@@ -61,6 +61,9 @@ func main() {
 	services.SetupUserRoutes(router, basePath)
 	services.SetupWeatherRoutes(router, basePath)
 	services.SetupContactRoutes(router, basePath)
+	services.SetupJobsRoutes(router, basePath)
+	services.SetupTODORoutes(router, basePath)
+
 	dsn := database.Dsn()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -69,13 +72,20 @@ func main() {
 
 	// start
 	router.Static("/images", "./images")
-	SeedData()
+	err = SeedData()
 	if err != nil {
 		log.Fatal(err)
 	}
 	//finish
 
-	err = db.AutoMigrate(&models.Account{}, &models.User{}, &models.Contact{}, &models.Address{})
+	err = db.AutoMigrate(&models.Account{},
+		&models.User{},
+		&models.Contact{},
+		&models.Address{},
+		&models.Job{},
+		&models.JobType{},
+		&models.ToDo{},
+		&models.ToDoList{})
 
 	if err != nil {
 		log.Fatal(err)
