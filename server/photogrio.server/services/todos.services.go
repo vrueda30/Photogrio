@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"photogrio-server/common"
+	"photogrio-server/database"
 	"photogrio-server/middleware"
 	"photogrio-server/models"
 	"strconv"
@@ -20,6 +21,31 @@ func SetupTODORoutes(router *gin.Engine, apiBasePath string) {
 	toDoRoute.GET(fmt.Sprintf("%s", "get_todo_lists"), middleware.CheckJWT(), middleware.ReadCookie(), getToDoLists)
 	toDoRoute.DELETE(fmt.Sprintf("%s", "delete_todo_list"), middleware.CheckJWT(), middleware.ReadCookie(), deleteToDoList)
 	toDoRoute.GET(fmt.Sprintf("%s", "get_todos_for_list"), middleware.CheckJWT(), middleware.ReadCookie(), getTodosForList)
+	toDoRoute.PATCH(":id", middleware.CheckJWT(), middleware.ReadCookie(), updateTodDo)
+}
+
+func updateTodDo(ctx *gin.Context) {
+	accountId := middleware.AccountCookie.AccountId
+	var toDo *models.UpdateToDo
+	if err := ctx.ShouldBindJSON(&toDo); err != nil {
+		handleError(err, ctx)
+		common.SendBadRequest(ctx, "Update failed")
+		return
+	}
+	toDoId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		log.Print(err)
+	}
+
+	log.Printf("todo: %d", toDoId)
+
+	if err := UpdateToDo(toDo, toDoId, accountId); err != nil {
+		handleError(err, ctx)
+		common.SendBadRequest(ctx, "Update failed")
+		return
+	}
+	ctx.JSON(http.StatusOK, toDo)
+	return
 }
 
 func getTodosForList(ctx *gin.Context) {
@@ -99,6 +125,10 @@ func createTodo(ctx *gin.Context) {
 	accountId := middleware.AccountCookie.AccountId
 	newTodo := &models.ToDo{}
 	err := ctx.ShouldBindJSON(newTodo)
+	if newTodo.ContactId.Int64 <= 0 {
+		newTodo.ContactId = database.NullInt64{}
+	}
+
 	log.Printf("model: %v", newTodo)
 	if err != nil {
 		common.HandlePanicError(err)

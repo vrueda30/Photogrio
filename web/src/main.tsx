@@ -19,6 +19,7 @@ import {EditContact} from "./pages/Contact/EditContact.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import {registerLicense} from '@syncfusion/ej2-base'
 import ToDos from "./pages/ToDos.tsx";
+import Logout from "./pages/Logout.tsx";
 
 
 initFontAwesome();
@@ -70,6 +71,11 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register />,
+        errorElement: <ErrorPage />
+    },
+    {
+        path: "/logout",
+        element: <Logout />,
         errorElement: <ErrorPage />
     }
 ])

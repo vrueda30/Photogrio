@@ -1,4 +1,4 @@
-import {Collapse, Container, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, Row} from "reactstrap";
+import {Collapse, Container, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem} from "reactstrap";
 import {useState} from "react";
 import {NavLink as RouterNavLink} from 'react-router-dom'
 import {NavLink} from 'reactstrap'
@@ -120,7 +120,7 @@ export const NavBar = () => {
                   <div className="ms-1" onClick={()=>{
                       logout({
                           logoutParams:{
-                              returnTo:"https://localhost:3000"
+                              returnTo:"https://localhost:3000/logout"
                           }
                       })
                   }}>

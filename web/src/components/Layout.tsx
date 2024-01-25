@@ -3,8 +3,8 @@ import NavBar from "./NavBar.tsx";
 import {useCallback, useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
-import {GET_CONTACT_COOKIES
-    , GET_USER_COOKIES
+import {
+    GET_USER_COOKIES
     , GET_ACCOUNT_SETUP_STATUS_URL
     , JOB_API_BASE_URL
     , ACCOUNT_API_BASE_URL} from "../pages/api-routes.tsx";
@@ -14,11 +14,11 @@ import {useIdleTimer} from "react-idle-timer";
 export const Layout = () => {
     const {user, getAccessTokenSilently} = useAuth0()
     const [setupStep, setSetupStep] = useState(0)
-    const [remaingTime, setRemainingTime] = useState(0)
+    const [remainingTime,setRemainingTime] = useState(0)
     const {logout} = useAuth0()
 
     const onIdle = () => {
-        logout({logoutParams:{returnTo:"https://localhost:3000"}})
+        logout({logoutParams:{returnTo:"https://localhost:3000/logout"}})
     }
     const { getRemainingTime } = useIdleTimer({
         onIdle,
@@ -73,6 +73,7 @@ export const Layout = () => {
         console.log("Layout use effect called")
         const interval = setInterval(()=>{
             setRemainingTime(Math.ceil(getRemainingTime() / 1000))
+            //setRemainingTime()
         },1000)
         getAccessTokenSilently().then((t) => {
             axios.get(get_cookies_url, {
@@ -80,19 +81,10 @@ export const Layout = () => {
                     Authorization: "Bearer " + t
                 },
                 withCredentials:true
-            }).then((r) => {
+            }).then(async (r) => {
+                await setupAccount(t);
                 const cookies = new Cookies()
                     cookies.set('user', r.data, {path: '/'})
-                    axios.get(GET_CONTACT_COOKIES + r.data.accountId, {
-                        headers: {
-                            Authorization: "Bearer " + t
-                        },
-                        withCredentials:true
-                    }).then(async () => {
-                            //await setup_account(t)
-                            await setupAccount(t)
-                        }
-                       )
                 }
             )
             return () => {
@@ -104,7 +96,7 @@ export const Layout = () => {
     return (
         <div className="h-100 w-100 d-inline-block">
             <NavBar/>
-            <div className="ps-0 pe-4">
+            <div className="ps-0 pe-0">
                     <Outlet/>
             </div>
         </div>

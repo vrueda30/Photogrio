@@ -6,7 +6,8 @@ export interface ToDo {
     completed: boolean,
     list: number,
     notes: string,
-    toDoListId: number
+    toDoListId: number,
+    contactId?: number
 }
 
 export interface ToDoList {

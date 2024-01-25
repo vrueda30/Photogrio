@@ -1,9 +1,9 @@
-import {Auth0Provider} from "@auth0/auth0-react";
+import {AppState, Auth0Provider} from "@auth0/auth0-react";
 import {useNavigate} from "react-router-dom";
 
 const AuthProviderWithCallback = ({children, ...props}) => {
     const navigate = useNavigate();
-    const onRedirectCallback = (appState) => {
+    const onRedirectCallback = (appState:AppState | undefined) => {
         navigate((appState && appState.returnTo) || window.location.pathname)
         //navigate("/")
     }

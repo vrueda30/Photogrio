@@ -5,9 +5,6 @@ import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
 import {TODO_API_BASE_URL} from "./api-routes.tsx";
 import {ToDo, ToDoList} from "../interfaces/todos.ts";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import NewToDoForm from "../components/Forms/NewToDoForm.tsx";
-import ToDoItem from "../components/ToDo/ToDoItem.tsx";
 import ToDoPanel from "../components/ToDo/ToDoPanel.tsx";
 
 export interface ActiveTab {
@@ -23,7 +20,8 @@ export interface ToDoAction{
     list?: number,
     completed?: boolean,
     notes?: string,
-    payload?:ToDo[]
+    payload?:ToDo[],
+    todo?:ToDo,
 }
 
 export interface ToDoState{
@@ -58,9 +56,10 @@ const toDoReducer = (todos = null , action:ToDoAction) =>{
         }
         case 'changed':{
             return todos.map(t => {
+                console.debug(`todo id: ${t.ID}`)
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                if (t.id === action.todo.id){
+                if (t.ID === action.todo.ID){
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     return action.todo
@@ -96,6 +95,26 @@ const ToDos = () => {
 
     const toggleNewToDo = () => {
         setNewToDoOpen(!newToDoOpen)
+    }
+
+    const handleUpdateToDo = async (todo:ToDo) => {
+        const token =  await getAccessTokenSilently();
+        console.log(`completed: ${todo.completed}`)
+        const updateToDo = {
+            name: todo.name,
+            completed: todo.completed,
+            contactId: todo?.contactId,
+        }
+        await axios.patch(`${TODO_API_BASE_URL}${todo.ID}`, updateToDo, {
+            headers:{
+                Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+        })
+        dispatch({
+            type: 'changed',
+            todo: todo,
+        })
     }
 
     const handleAddToDo = (todo:ToDo) => {
@@ -243,34 +262,25 @@ const ToDos = () => {
                         )
                     })}
             </div>
-            <div className="to-do-panel w-100">
-                <div className="to-do-panel-bar d-flex ps-4 pt-4 w-100">
-                    <div className="col-8 d-flex justify-content-start align-items-start">
-                        <div className="align-items-center align-middle"><h5>{toDoLists.length > 0 ? title:"To Dos"}</h5></div>
-                        <div className="ms-2 d-flex h-100 justify-content-center align-items-center trash-icon">
-                            {toDoLists.length > 0 && <FontAwesomeIcon icon={["fal","trash-can"]} onClick={async ()=>{
-                                await deleteList(activeTab?.id, activeTab?.title)
-                            }} />}
-                        </div>
-                    </div>
-                    <div className="col-4 d-flex justify-content-end align-items-end">
-                        <Button className="btn btn-photogrio" onClick={toggleNewToDo} disabled={toDoLists.length === 0}>Create To Do</Button>
-                    </div>
-                    <div>
-                    </div>
-                </div>
-                <div>
-                    <div className="to-do-view d-flex justify-content-center">
-                        {!toDoLists || toDoLists.length === 0 && <div>Create your first To Do list</div>}
-                        {!toDos || toDos.length === 0 && toDoLists.length > 0 && <div>Create your first To Do</div>}
-                        {toDos && toDos.length > 0 && <ToDoPanel toDos={toDos} className='p-todo-panel'/>}
+            <div className="to-do-panel mt-2 ms-2 w-100 p-0">
+                <div className="mt-2 m-0 p-0">
+                    <div className="d-flex h-100 align-content-center justify-content-center mt-5">
+                        {(toDoLists.length > 0 && toDos) && <ToDoPanel toDos={toDos}
+                                                                       listName={title}
+                                                                       listId={activeTab?.id}
+                                                                       toggle={toggleNewToDo}
+                                                                       isOpen={newToDoOpen}
+                                                                       handleAdd={handleAddToDo}
+                                                                       handleChange={handleUpdateToDo}
+                        /> }
                     </div>
                 </div>
             </div>
         </div>
-            {newListOpen && <NewToDoListForm isOpen={newListOpen} toggle={toggleNewListOpen} submit={submitNewList}/>}
+            {newListOpen && <NewToDoListForm isOpen={newListOpen} toggle={toggleNewListOpen} submit={submitNewList} />}
+            {/*    {newListOpen && <NewToDoListForm isOpen={newListOpen} toggle={toggleNewListOpen} submit={submitNewList}/>}
 
-            {newToDoOpen && <NewToDoForm listId={activeTab.id} handleAddToDo={handleAddToDo} toggle={toggleNewToDo} isOpen={newToDoOpen} />}
+            {newToDoOpen && <NewToDoForm listId={activeTab.id} handleAddToDo={handleAddToDo} toggle={toggleNewToDo} isOpen={newToDoOpen} />} */}
         </div>
     )
 }

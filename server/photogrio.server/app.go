@@ -21,7 +21,7 @@ const basePath = "/api"
 func main() {
 	log.Print("Starting photogrio server")
 	MakeLogDirectory()
-	f, e := os.Create("/logs/photogrio.log")
+	f, e := os.Create("/photogrio/logs/photogrio.log")
 	if e != nil {
 		log.Print(e)
 		log.Fatal(e)
@@ -38,9 +38,10 @@ func main() {
 	}
 
 	router := gin.Default()
+
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "https://localhost:3000"},
-		AllowMethods:     []string{"GET", "PUT", "POST", "OPTIONS"},
+		AllowMethods:     []string{"GET", "PUT", "POST", "PATCH", "OPTIONS"},
 		AllowHeaders:     []string{"origin", "content-type", "accept", "X-Custom-Header", "Authorization", "models"},
 		AllowCredentials: true,
 	}))
@@ -91,14 +92,13 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Fatal(router.RunTLS(fmt.Sprintf(":%s", "5001"), "localhost.pem", "localhostkey.pem"))
-	//log.Fatal(router.Run(":5001"))
 }
 
 func MakeLogDirectory() {
 
-	_, err := os.Stat("/logs/")
+	_, err := os.Stat("/photogrio/logs/")
 	if os.IsNotExist(err) {
-		err = os.Mkdir("/logs/", os.ModeDir)
+		err = os.Mkdir("/photogrio/logs/", os.ModeDir)
 		if err != nil {
 			log.Print(err)
 		}

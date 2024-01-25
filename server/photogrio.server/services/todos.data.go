@@ -14,6 +14,19 @@ func CreateTodo(newTodo *models.ToDo) (*models.ToDo, error) {
 	return newTodo, nil
 }
 
+func UpdateToDo(todoWUpdates *models.UpdateToDo, toDoId int, accountId int) error {
+	var toDo models.ToDo
+	if err := database.DB.Where("id=? AND account_id=?", toDoId, accountId).First(&toDo).Error; err != nil {
+		return err
+	}
+
+	if err := database.DB.Model(&toDo).Select("Name", "Completed").Updates(todoWUpdates).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func CreateToDoList(newToDoList *models.ToDoList) (*models.ToDoList, error) {
 	res := database.DB.Create(&newToDoList)
 	if res.Error != nil {
